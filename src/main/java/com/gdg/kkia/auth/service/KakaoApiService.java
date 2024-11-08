@@ -30,7 +30,7 @@ public class KakaoApiService {
                 + kakaoProperties.clientId() + "&redirect_uri=" + kakaoProperties.redirectUri();
     }
 
-    public KakaoTokenResponse getAccessToken(String authorizationCode, HttpServletRequest httpServletRequest) {
+    public KakaoTokenResponse getAccessToken(String authorizationCode) {
         String url = KAKAO_AUTH_BASE_URL + "/token";
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);

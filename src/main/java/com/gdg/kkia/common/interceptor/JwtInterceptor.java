@@ -1,6 +1,7 @@
 package com.gdg.kkia.common.interceptor;
 
 import com.gdg.kkia.common.exception.UnauthorizedException;
+import com.gdg.kkia.member.service.MemberTokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

@@ -21,7 +21,9 @@ public class Member {
     @NotNull
     private String name;
     @NotNull
-    private String phoneNumber;
-    @NotNull
     private String email;
+    public Member(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
 }

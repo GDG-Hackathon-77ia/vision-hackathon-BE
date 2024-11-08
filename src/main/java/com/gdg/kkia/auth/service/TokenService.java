@@ -39,15 +39,14 @@ public class TokenService {
     }
 
     public String generateRefreshToken(String email) {
-        String refreshToken = Jwts.builder()
+
+        return Jwts.builder()
                 .setSubject(email)
                 .claim("tokenType", "refresh")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + REFRESH_SEVEN_DAYS))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
-
-        return refreshToken;
     }
 
 
