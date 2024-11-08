@@ -34,6 +34,14 @@ public class KakaoToken {
     @NotNull
     private int refreshTokenExpiresIn;
 
+    public KakaoToken(String memberEmail, String accessToken, String refreshToken, int expiresIn, int refreshTokenExpiresIn) {
+        this.memberEmail = memberEmail;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+        this.expiresIn = expiresIn;
+        this.refreshTokenExpiresIn = refreshTokenExpiresIn;
+    }
+
     public boolean isAccessTokenExpired() {
         return LocalDateTime.now().isAfter(issuedAt.plusSeconds(expiresIn));
     }
