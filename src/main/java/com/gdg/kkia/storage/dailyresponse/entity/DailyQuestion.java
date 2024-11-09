@@ -20,4 +20,8 @@ public class DailyQuestion {
     private Long id;
     @NotNull
     private String question;
+
+    public DailyQuestion(String question) {
+        this.question = question;
+    }
 }
