@@ -17,4 +17,9 @@ public class ChatRequest {
     private String response;
     private LocalDateTime responseDateTime;
     private GeminiRequestType type;
+
+    @Override
+    public String toString() {
+        return "Question: " + question + ", Response: " + response + ", ResponseTime: " + responseDateTime + ", Type: " + type;
+    }
 }

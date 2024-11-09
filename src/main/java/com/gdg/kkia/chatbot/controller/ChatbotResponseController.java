@@ -2,12 +2,14 @@ package com.gdg.kkia.chatbot.controller;
 
 import com.gdg.kkia.chatbot.dto.ChatRequest;
 import com.gdg.kkia.chatbot.dto.ChatResponse;
+import com.gdg.kkia.chatbot.entity.GeminiJsonResponse;
 import com.gdg.kkia.chatbot.entity.GeminiRequestType;
 import com.gdg.kkia.chatbot.service.ChatbotResponseService;
 import com.gdg.kkia.chatbot.service.GeminiService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,4 +43,13 @@ public class ChatbotResponseController {
     public ResponseEntity<List<ChatRequest>> getChatbotResponses(@RequestAttribute("memberId") Long memberId, @PathVariable("type") GeminiRequestType type, @PathVariable("localDateTime") LocalDateTime localDateTime) {
         return ResponseEntity.ok().body(chatbotResponseService.getChatbotResponses(memberId, type, localDateTime));
     }
+
+    @Operation(summary = "Gemini 자가 진단", description = "Gemini가 스스로 문진 후 결과를 보여줍니다.")
+    @GetMapping(value = "/chatbot/selftest", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GeminiJsonResponse> selfTest(@RequestAttribute("memberId") Long memberId) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(geminiService.selfTest(memberId));
+    }
+
 }

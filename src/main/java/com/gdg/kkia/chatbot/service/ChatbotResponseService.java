@@ -10,6 +10,7 @@ import com.gdg.kkia.member.repository.MemberRepository;
 import com.gdg.kkia.chatbot.entity.ChatbotResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class ChatbotResponseService {
     private final ChatbotResponseRepository chatbotResponseRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional
     public void saveChatbotResponses(Long memberId, GeminiRequestType type, List<ChatRequest> conversations) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("memberId에 해당하는 멤버가 없습니다."));
@@ -47,6 +49,7 @@ public class ChatbotResponseService {
         chatbotResponseRepository.saveAll(responses);
     }
 
+    @Transactional(readOnly = true)
     public List<ChatRequest> getChatbotResponses(Long memberId, GeminiRequestType type, LocalDateTime localDateTime) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("memberId에 해당하는 멤버가 없습니다."));
