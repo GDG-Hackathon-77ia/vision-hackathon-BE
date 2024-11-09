@@ -1,13 +1,11 @@
-package com.gdg.kkia.chatbot.dto;
+package com.gdg.kkia.chatbot.entity;
 
-import com.gdg.kkia.chatbot.entity.GeminiRequestType;
 import com.gdg.kkia.member.entity.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -29,7 +27,6 @@ public class ChatbotResponse {
     @NotNull
     private String response;
     @NotNull
-    @CreatedDate
     private LocalDateTime responseDateTime;
     @NotNull
     @Enumerated(EnumType.STRING)

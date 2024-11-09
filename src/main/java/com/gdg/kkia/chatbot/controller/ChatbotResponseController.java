@@ -1,6 +1,7 @@
 package com.gdg.kkia.chatbot.controller;
 
-import com.gdg.kkia.chatbot.entity.GeminiContent;
+import com.gdg.kkia.chatbot.dto.ChatRequest;
+import com.gdg.kkia.chatbot.dto.ChatResponse;
 import com.gdg.kkia.chatbot.entity.GeminiRequestType;
 import com.gdg.kkia.chatbot.service.ChatbotResponseService;
 import com.gdg.kkia.chatbot.service.GeminiService;
@@ -9,7 +10,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
@@ -22,23 +22,15 @@ public class ChatbotResponseController {
     private final GeminiService geminiService;
     private final ChatbotResponseService chatbotResponseService;
 
-    @Operation(summary = "채팅 시작", description = "Gemini와 채팅을 시작 혹은 계속 진행합니다.")
+    @Operation(summary = "채팅 시작", description = "채팅을 시작 혹은 계속 진행합니다.")
     @PostMapping("/gemini/chat/{type}")
-    public ResponseEntity<GeminiContent> startChat(@PathVariable("type") GeminiRequestType type, @RequestBody List<GeminiContent> conversations) {
-        try {
-            return ResponseEntity.ok().body(geminiService.startChat(type, conversations));
-        } catch (HttpClientErrorException e) {
-            GeminiContent content = GeminiContent.builder()
-                    .role("model")
-                    .text(e.getMessage())
-                    .build();
-            return ResponseEntity.badRequest().body(content);
-        }
+    public ResponseEntity<ChatResponse> startChat(@PathVariable("type") GeminiRequestType type, @RequestBody List<ChatRequest> conversations) {
+        return ResponseEntity.ok().body(geminiService.startChat(type, conversations));
     }
 
     @Operation(summary = "채팅 저장", description = "채팅 기록을 저장합니다.")
     @PostMapping("/chatbot/save/{type}")
-    public ResponseEntity<Void> saveChatbotResponse(@RequestAttribute("memberId") Long memberId, @PathVariable("type") GeminiRequestType type, @RequestBody List<GeminiContent> conversations) {
+    public ResponseEntity<Void> saveChatbotResponse(@RequestAttribute("memberId") Long memberId, @PathVariable("type") GeminiRequestType type, @RequestBody List<ChatRequest> conversations) {
         chatbotResponseService.saveChatbotResponses(memberId, type, conversations);
         return ResponseEntity.ok().build();
     }

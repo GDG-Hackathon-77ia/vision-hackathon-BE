@@ -14,8 +14,7 @@ public class GeminiResponse {
     private List<Candidate> candidates;
     private PromptFeedback promptFeedback;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     public static class Candidate {
         private GeminiContent content;
         private String finishReason;

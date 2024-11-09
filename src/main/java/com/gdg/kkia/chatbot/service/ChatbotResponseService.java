@@ -1,18 +1,18 @@
 package com.gdg.kkia.chatbot.service;
 
+import com.gdg.kkia.chatbot.dto.ChatRequest;
 import com.gdg.kkia.chatbot.repository.ChatbotResponseRepository;
 import com.gdg.kkia.common.exception.BadRequestException;
 import com.gdg.kkia.common.exception.NotFoundException;
 import com.gdg.kkia.chatbot.entity.GeminiRequestType;
-import com.gdg.kkia.chatbot.entity.GeminiContent;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
-import com.gdg.kkia.chatbot.dto.ChatbotResponse;
+import com.gdg.kkia.chatbot.entity.ChatbotResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -21,30 +21,31 @@ public class ChatbotResponseService {
     private final ChatbotResponseRepository chatbotResponseRepository;
     private final MemberRepository memberRepository;
 
-    public void saveChatbotResponses(Long memberId, GeminiRequestType type, List<GeminiContent> conversations) {
+    public void saveChatbotResponses(Long memberId, GeminiRequestType type, List<ChatRequest> conversations) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("memberId에 해당하는 멤버가 없습니다."));
 
-        System.out.println(conversations.size());
+        List<ChatbotResponse> responses = new ArrayList<>();
 
-        for(int i = 0; i < conversations.size(); i += 2) {
-            if (conversations.size() <= i + 1) break;
+        for (ChatRequest chat : conversations) {
+            // check validation
+            if (chat.getQuestion() == null) throw new BadRequestException("Question 항목이 null입니다.");
+            if (chat.getResponse() == null) throw new BadRequestException("Response 항목이 null입니다.");
+            if (chat.getResponseDateTime() == null) throw new BadRequestException("ResponseDateTime 항목이 null입니다.");
 
             ChatbotResponse chatbotResponse = new ChatbotResponse();
-
-            GeminiContent question = conversations.get(i);
-            GeminiContent answer = conversations.get(i + 1);
-
-            if (!Objects.equals(question.getRole(), "model") || !Objects.equals(answer.getRole(), "user"))
-                throw new BadRequestException("대화는 '질문-대답' 구조이어야 합니다.");
-
-            chatbotResponse.setQuestion(question.getParts().get(0).getText());
-            chatbotResponse.setResponse(answer.getParts().get(0).getText());
+            chatbotResponse.setQuestion(chat.getQuestion());
+            chatbotResponse.setResponse(chat.getResponse());
+            chatbotResponse.setResponseDateTime(chat.getResponseDateTime());
             chatbotResponse.setType(type);
             chatbotResponse.setMember(member);
 
-            chatbotResponseRepository.save(chatbotResponse);
+            responses.add(chatbotResponse);
+
+
         }
+
+        chatbotResponseRepository.saveAll(responses);
     }
 
 }
