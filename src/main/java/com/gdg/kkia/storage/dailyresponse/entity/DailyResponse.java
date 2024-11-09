@@ -33,7 +33,7 @@ public class DailyResponse {
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
-    @OneToOne
+    @ManyToOne
     @NotNull
     @JoinColumn(name = "daily_question_id")
     @OnDelete(action = OnDeleteAction.CASCADE)

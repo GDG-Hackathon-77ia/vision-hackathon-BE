@@ -53,8 +53,11 @@ public class DailyResponseService {
         return new DailyResponseResponse(dailyResponse.getId(), dailyResponse.getDailyQuestion().getQuestion(), dailyResponse.getResponse());
     }
 
-    public List<DailyResponseResponse> getAllResponseOfDailyQuestionForManager() {
-        return dailyResponseRepository.findAll()
+    public List<DailyResponseResponse> getAllResponseOfDailyQuestion(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException("memberId에 해당하는 멤버가 없습니다."));
+
+        return dailyResponseRepository.findAllByMember(member)
                 .stream()
                 .map(DailyResponse -> new DailyResponseResponse(
                         DailyResponse.getId(),
