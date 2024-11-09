@@ -49,4 +49,8 @@ public class GeminiResponse {
         private List<SafetyRating> safetyRatings;
 
     }
+
+    public String getResponseText() {
+        return this.getCandidates().get(0).getContent().getParts().get(0).getText().toString();
+    }
 }
