@@ -13,6 +13,10 @@ public class GeminiResponse {
     private List<Candidate> candidates;
     private PromptFeedback promptFeedback;
 
+    public String getResponseText() {
+        return this.getCandidates().get(0).getContent().getParts().get(0).getText().toString();
+    }
+
     @Getter
     @Setter
     public static class Candidate {
@@ -22,18 +26,16 @@ public class GeminiResponse {
         private List<SafetyRating> safetyRatings;
     }
 
-    @Getter @Setter
+    @Getter
+    @Setter
     public static class SafetyRating {
         private String category;
         private String probability;
     }
 
-    @Getter @Setter
+    @Getter
+    @Setter
     public static class PromptFeedback {
         private List<SafetyRating> safetyRatings;
-    }
-
-    public String getResponseText() {
-        return this.getCandidates().get(0).getContent().getParts().get(0).getText().toString();
     }
 }

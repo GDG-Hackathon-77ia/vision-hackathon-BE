@@ -1,8 +1,8 @@
 package com.gdg.kkia.chatbot.controller;
 
+import com.gdg.kkia.chatbot.service.ChatbotResponseService;
 import com.gdg.kkia.gemini.dto.GeminiContent;
 import com.gdg.kkia.gemini.entity.GeminiRequestType;
-import com.gdg.kkia.chatbot.service.ChatbotResponseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
