@@ -1,16 +1,16 @@
-package com.gdg.kkia.storage.dailyresponse.service;
+package com.gdg.kkia.dailyresponse.service;
 
 import com.gdg.kkia.common.exception.NotFoundException;
 import com.gdg.kkia.common.exception.UnauthorizedException;
+import com.gdg.kkia.dailyresponse.dto.DailyResponseRequest;
+import com.gdg.kkia.dailyresponse.dto.DailyResponseResponse;
+import com.gdg.kkia.dailyresponse.entity.DailyQuestion;
+import com.gdg.kkia.dailyresponse.entity.DailyResponse;
+import com.gdg.kkia.dailyresponse.repository.DailyResponseRepository;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
 import com.gdg.kkia.point.service.PointLogService;
-import com.gdg.kkia.storage.dailyresponse.dto.DailyResponseRequest;
-import com.gdg.kkia.storage.dailyresponse.dto.DailyResponseResponse;
-import com.gdg.kkia.storage.dailyresponse.entity.DailyQuestion;
-import com.gdg.kkia.storage.dailyresponse.entity.DailyResponse;
-import com.gdg.kkia.storage.dailyresponse.repository.DailyQuestionRepository;
-import com.gdg.kkia.storage.dailyresponse.repository.DailyResponseRepository;
+import com.gdg.kkia.dailyresponse.repository.DailyQuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

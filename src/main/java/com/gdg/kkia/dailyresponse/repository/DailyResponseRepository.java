@@ -1,7 +1,7 @@
-package com.gdg.kkia.storage.dailyresponse.repository;
+package com.gdg.kkia.dailyresponse.repository;
 
+import com.gdg.kkia.dailyresponse.entity.DailyResponse;
 import com.gdg.kkia.member.entity.Member;
-import com.gdg.kkia.storage.dailyresponse.entity.DailyResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.gdg.kkia.storage.chatbot.entity;
+package com.gdg.kkia.chatbot.entity;
 
 import com.gdg.kkia.gemini.entity.GeminiRequestType;
 import com.gdg.kkia.member.entity.Member;
