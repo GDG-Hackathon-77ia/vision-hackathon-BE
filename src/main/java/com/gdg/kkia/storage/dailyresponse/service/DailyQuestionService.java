@@ -5,13 +5,20 @@ import com.gdg.kkia.storage.dailyresponse.dto.DailyQuestionRequest;
 import com.gdg.kkia.storage.dailyresponse.dto.DailyQuestionResponse;
 import com.gdg.kkia.storage.dailyresponse.entity.DailyQuestion;
 import com.gdg.kkia.storage.dailyresponse.repository.DailyQuestionRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -22,9 +29,28 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DailyQuestionService {
 
+    private static final Logger logger = LoggerFactory.getLogger(DailyQuestionService.class);
     private final static int NUMBER_OF_RECENTLY_QUESTION_TO_EXCLUDE = 3;
 
     private final DailyQuestionRepository dailyQuestionRepository;
+
+    @PostConstruct
+    public void loadQuestionsFromFile() {
+        try (InputStream inputStream = getClass().getResourceAsStream("/dailyQuestions.txt");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(inputStream)))) {
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String finalLine = line;
+                if (dailyQuestionRepository.findAll().stream().noneMatch(q -> q.getQuestion().equals(finalLine.trim()))) {
+                    DailyQuestion question = new DailyQuestion(line.trim());
+                    dailyQuestionRepository.save(question);
+                }
+            }
+        } catch (IOException e) {
+            logger.error("Failed to load questions from file", e);
+        }
+    }
 
     @Transactional
     public void addDailyQuestion(DailyQuestionRequest dailyQuestionRequest) {
