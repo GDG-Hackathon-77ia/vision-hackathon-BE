@@ -1,7 +1,7 @@
-package com.gdg.kkia.storage.chatbot.entity;
+package com.gdg.kkia.chatbot.entity;
 
+import com.gdg.kkia.gemini.entity.GeminiRequestType;
 import com.gdg.kkia.member.entity.Member;
-import com.gdg.kkia.point.entity.PointLog;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -33,16 +33,11 @@ public class ChatbotResponse {
     private LocalDateTime responseDateTime;
     @NotNull
     @Enumerated(EnumType.STRING)
-    private PointLog.Type type;
+    private GeminiRequestType type;
     @ManyToOne
     @JoinColumn(name = "member_id")
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
-
-    public enum Type {
-        DIARY,
-        CHAT
-    }
 
 }

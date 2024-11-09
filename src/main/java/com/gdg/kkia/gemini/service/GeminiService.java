@@ -1,6 +1,6 @@
 package com.gdg.kkia.gemini.service;
 
-import com.gdg.kkia.gemini.GeminiRequestType;
+import com.gdg.kkia.gemini.entity.GeminiRequestType;
 import com.gdg.kkia.gemini.dto.GeminiContent;
 import com.gdg.kkia.gemini.dto.GeminiRequest;
 import com.gdg.kkia.gemini.dto.GeminiResponse;

@@ -1,4 +1,4 @@
-package com.gdg.kkia.storage.diary.entity;
+package com.gdg.kkia.dailyresponse.entity;
 
 import com.gdg.kkia.member.entity.Member;
 import jakarta.persistence.*;
@@ -18,20 +18,34 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Diary {
+public class DailyResponse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private String content;
-    @NotNull
     @CreatedDate
-    private LocalDateTime writtenDatetime;
+    private LocalDateTime responseDateTime;
+    @NotNull
+    private String response;
     @ManyToOne
     @JoinColumn(name = "member_id")
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "daily_question_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private DailyQuestion dailyQuestion;
 
+    public DailyResponse(String response, Member member, DailyQuestion dailyQuestion) {
+        this.response = response;
+        this.member = member;
+        this.dailyQuestion = dailyQuestion;
+    }
+
+    public boolean checkMember(Member member) {
+        return this.member.equals(member);
+    }
 }

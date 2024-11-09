@@ -1,4 +1,4 @@
-package com.gdg.kkia.storage.dailyresponse.entity;
+package com.gdg.kkia.dailyresponse.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
