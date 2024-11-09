@@ -8,6 +8,7 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.core5.util.Timeout;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,6 +38,14 @@ public class WebConfig implements WebMvcConfigurer {
                 .errorHandler(errorHandler)
                 .requestFactory(this::httpComponentsClientHttpRequestFactory)
                 .build();
+    }
+
+    @Bean
+    @Qualifier("geminiRestTemplate")
+    public RestTemplate geminiRestTemplate() {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getInterceptors().add((request, body, execution) -> execution.execute(request, body));
+        return restTemplate;
     }
 
     private HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory() {
