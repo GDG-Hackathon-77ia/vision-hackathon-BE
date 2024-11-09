@@ -1,5 +1,6 @@
 package com.gdg.kkia.diary.entity;
 
+import com.gdg.kkia.common.exception.BadRequestException;
 import com.gdg.kkia.member.entity.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -34,4 +35,19 @@ public class Diary {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
+    public Diary(String content, Member member) {
+        this.content = content;
+        this.member = member;
+    }
+
+    public boolean checkMemberIsNotCorrect(Member member) {
+        return !this.member.equals(member);
+    }
+
+    public void updateDiary(String content) {
+        if (content.isEmpty() || content.isBlank()) {
+            throw new BadRequestException("변경할 일기의 내용이 비어있을 수 없습니다.");
+        }
+        this.content = content;
+    }
 }

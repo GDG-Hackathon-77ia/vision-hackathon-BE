@@ -73,10 +73,6 @@ public class Pet {
         this.name = name;
     }
 
-    public boolean checkMemberIsCorrect(Member member) {
-        return this.member.equals(member);
-    }
-
     public int earnExperience(GrowthButton growthButton) {
         int plusExperience = experienceToEarn(growthButton);
 
