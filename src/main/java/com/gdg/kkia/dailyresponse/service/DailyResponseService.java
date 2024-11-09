@@ -6,11 +6,11 @@ import com.gdg.kkia.dailyresponse.dto.DailyResponseRequest;
 import com.gdg.kkia.dailyresponse.dto.DailyResponseResponse;
 import com.gdg.kkia.dailyresponse.entity.DailyQuestion;
 import com.gdg.kkia.dailyresponse.entity.DailyResponse;
+import com.gdg.kkia.dailyresponse.repository.DailyQuestionRepository;
 import com.gdg.kkia.dailyresponse.repository.DailyResponseRepository;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
 import com.gdg.kkia.point.service.PointLogService;
-import com.gdg.kkia.dailyresponse.repository.DailyQuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

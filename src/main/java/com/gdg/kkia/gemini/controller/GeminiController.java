@@ -1,7 +1,7 @@
 package com.gdg.kkia.gemini.controller;
 
-import com.gdg.kkia.gemini.entity.GeminiRequestType;
 import com.gdg.kkia.gemini.dto.GeminiContent;
+import com.gdg.kkia.gemini.entity.GeminiRequestType;
 import com.gdg.kkia.gemini.service.GeminiService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
