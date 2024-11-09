@@ -1,4 +1,4 @@
-package com.gdg.kkia.gemini.dto;
+package com.gdg.kkia.chatbot.entity;
 
 import lombok.Builder;
 import lombok.Getter;
