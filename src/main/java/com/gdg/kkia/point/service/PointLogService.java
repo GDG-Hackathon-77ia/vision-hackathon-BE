@@ -1,8 +1,10 @@
 package com.gdg.kkia.point.service;
 
+import com.gdg.kkia.common.exception.BadRequestException;
 import com.gdg.kkia.common.exception.NotFoundException;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
+import com.gdg.kkia.pet.entity.Pet;
 import com.gdg.kkia.point.dto.PointLogResponse;
 import com.gdg.kkia.point.dto.PointResponse;
 import com.gdg.kkia.point.entity.PointLog;
@@ -120,8 +122,11 @@ public class PointLogService {
     }
 
     @Transactional
-    public void consumePointAndWriteLog(Member member, int point) {
-        member.consumePoint(point);
+    public void consumePointAndWriteLog(Member member, Pet.GrowthButton growthButton, boolean isMaxGrowth) {
+        if (isMaxGrowth) {
+            throw new BadRequestException("최고레벨입니다.");
+        }
+        int point = member.consumePoint(growthButton);
         PointLog newPointLog = new PointLog(PointLog.Type.PET_GROWTH, PointLog.Status.CONSUMED, member, point);
         pointLogRepository.save(newPointLog);
     }
