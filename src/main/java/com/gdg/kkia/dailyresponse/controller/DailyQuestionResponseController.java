@@ -1,12 +1,12 @@
-package com.gdg.kkia.storage.dailyresponse.controller;
+package com.gdg.kkia.dailyresponse.controller;
 
 import com.gdg.kkia.common.dto.StringTypeMessageResponse;
-import com.gdg.kkia.storage.dailyresponse.dto.DailyQuestionRequest;
-import com.gdg.kkia.storage.dailyresponse.dto.DailyQuestionResponse;
-import com.gdg.kkia.storage.dailyresponse.dto.DailyResponseRequest;
-import com.gdg.kkia.storage.dailyresponse.dto.DailyResponseResponse;
-import com.gdg.kkia.storage.dailyresponse.service.DailyQuestionService;
-import com.gdg.kkia.storage.dailyresponse.service.DailyResponseService;
+import com.gdg.kkia.dailyresponse.dto.DailyQuestionRequest;
+import com.gdg.kkia.dailyresponse.dto.DailyQuestionResponse;
+import com.gdg.kkia.dailyresponse.dto.DailyResponseRequest;
+import com.gdg.kkia.dailyresponse.dto.DailyResponseResponse;
+import com.gdg.kkia.dailyresponse.service.DailyQuestionService;
+import com.gdg.kkia.dailyresponse.service.DailyResponseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

@@ -1,10 +1,10 @@
-package com.gdg.kkia.storage.dailyresponse.service;
+package com.gdg.kkia.dailyresponse.service;
 
 import com.gdg.kkia.common.exception.NotFoundException;
-import com.gdg.kkia.storage.dailyresponse.dto.DailyQuestionRequest;
-import com.gdg.kkia.storage.dailyresponse.dto.DailyQuestionResponse;
-import com.gdg.kkia.storage.dailyresponse.entity.DailyQuestion;
-import com.gdg.kkia.storage.dailyresponse.repository.DailyQuestionRepository;
+import com.gdg.kkia.dailyresponse.dto.DailyQuestionRequest;
+import com.gdg.kkia.dailyresponse.dto.DailyQuestionResponse;
+import com.gdg.kkia.dailyresponse.entity.DailyQuestion;
+import com.gdg.kkia.dailyresponse.repository.DailyQuestionRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
