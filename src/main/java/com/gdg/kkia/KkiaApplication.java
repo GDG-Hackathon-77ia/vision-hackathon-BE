@@ -11,8 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableConfigurationProperties(KakaoProperties.class)
 public class KkiaApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(KkiaApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(KkiaApplication.class, args);
+    }
 
 }

@@ -2,9 +2,8 @@ package com.gdg.kkia.auth.service;
 
 import com.gdg.kkia.auth.dto.KakaoTokenResponse;
 import com.gdg.kkia.auth.dto.KakaoUserResponse;
+import com.gdg.kkia.common.exception.NotFoundException;
 import com.gdg.kkia.common.properties.KakaoProperties;
-import com.gdg.kkia.common.exception.*;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;

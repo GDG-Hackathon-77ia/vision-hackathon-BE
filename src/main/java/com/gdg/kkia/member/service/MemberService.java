@@ -7,19 +7,19 @@ import com.gdg.kkia.auth.service.KakaoApiService;
 import com.gdg.kkia.auth.service.KakaoTokenService;
 import com.gdg.kkia.auth.service.TokenService;
 import com.gdg.kkia.common.exception.ConflictException;
+import com.gdg.kkia.common.exception.NotFoundException;
 import com.gdg.kkia.member.dto.LoginRequest;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.gdg.kkia.common.exception.NotFoundException;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService{
+public class MemberService {
 
     private final MemberRepository memberRepository;
     private final TokenService tokenService;
@@ -47,7 +47,6 @@ public class MemberService{
         return new TokenResponse(accessToken, refreshToken);
     }
 
-    @Transactional
     public void registerNewMember(String name, String email) {
 
         if (memberRepository.existsByEmail(email)) {

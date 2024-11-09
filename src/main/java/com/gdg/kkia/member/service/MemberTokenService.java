@@ -1,11 +1,11 @@
 package com.gdg.kkia.member.service;
 
 import com.gdg.kkia.auth.service.TokenService;
+import com.gdg.kkia.common.exception.NotFoundException;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.gdg.kkia.common.exception.NotFoundException;
 
 @Service
 @RequiredArgsConstructor
