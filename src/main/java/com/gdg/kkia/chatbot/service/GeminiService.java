@@ -1,7 +1,6 @@
 package com.gdg.kkia.chatbot.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gdg.kkia.chatbot.dto.ChatRequest;
 import com.gdg.kkia.chatbot.dto.ChatResponse;
@@ -15,25 +14,26 @@ import com.gdg.kkia.chatbot.repository.ChatbotResponseRepository;
 import com.gdg.kkia.common.exception.NotFoundException;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
+import com.gdg.kkia.survey.service.SurveyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class GeminiService {
 
     private final MemberRepository memberRepository;
     private final ChatbotResponseRepository chatbotResponseRepository;
+    private final SurveyService surveyService;
 
     @Qualifier("geminiRestTemplate")
     @Autowired
@@ -206,6 +206,7 @@ public class GeminiService {
         return GeminiContent.builder().role("model").text(prompt).build();
     }
 
+    @Transactional
     public GeminiJsonResponse selfTest(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("memberId에 해당하는 멤버가 없습니다."));
@@ -250,15 +251,12 @@ public class GeminiService {
         ObjectMapper mapper = new ObjectMapper();
         try {
             GeminiJsonResponse response = mapper.readValue(jsonResponse, GeminiJsonResponse.class);
-            System.out.println(response.getSummary());
             // answer score 추출
-            StringBuilder answerStr = new StringBuilder();
+            List<Integer> answers = new ArrayList<>();
             for (int i = 0; i < response.getQuestion().size(); i++) {
-                answerStr.append(response.getQuestion().get(i).getScore());
-                if (i != response.getQuestion().size() - 1)
-                    answerStr.append(",");
+                answers.add(response.getQuestion().get(i).getScore());
             }
-            System.out.println(answerStr);
+            surveyService.saveSurveyAnswerWrittenByModel(answers, member);
             return response;
         } catch (JsonProcessingException e) {
             throw new RuntimeException("JSON 파싱 오류", e);
