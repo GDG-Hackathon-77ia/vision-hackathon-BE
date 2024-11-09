@@ -1,8 +1,10 @@
 package com.gdg.kkia.chatbot.controller;
 
+import com.gdg.kkia.chatbot.dto.ChatRequest;
+import com.gdg.kkia.chatbot.dto.ChatResponse;
+import com.gdg.kkia.chatbot.entity.GeminiRequestType;
 import com.gdg.kkia.chatbot.service.ChatbotResponseService;
-import com.gdg.kkia.gemini.dto.GeminiContent;
-import com.gdg.kkia.gemini.entity.GeminiRequestType;
+import com.gdg.kkia.chatbot.service.GeminiService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +16,21 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-@Tag(name = "챗봇 응답", description = "챗봇 응답(저장) 관련 API")
+@Tag(name = "챗봇", description = "챗봇 관련 API")
 public class ChatbotResponseController {
 
+    private final GeminiService geminiService;
     private final ChatbotResponseService chatbotResponseService;
+
+    @Operation(summary = "채팅 시작", description = "채팅을 시작 혹은 계속 진행합니다.")
+    @PostMapping("/gemini/chat/{type}")
+    public ResponseEntity<ChatResponse> startChat(@PathVariable("type") GeminiRequestType type, @RequestBody List<ChatRequest> conversations) {
+        return ResponseEntity.ok().body(geminiService.startChat(type, conversations));
+    }
 
     @Operation(summary = "채팅 저장", description = "채팅 기록을 저장합니다.")
     @PostMapping("/chatbot/save/{type}")
-    public ResponseEntity<Void> saveChatbotResponse(@RequestAttribute("memberId") Long memberId, @PathVariable("type") GeminiRequestType type, @RequestBody List<GeminiContent> conversations) {
+    public ResponseEntity<Void> saveChatbotResponse(@RequestAttribute("memberId") Long memberId, @PathVariable("type") GeminiRequestType type, @RequestBody List<ChatRequest> conversations) {
         chatbotResponseService.saveChatbotResponses(memberId, type, conversations);
         return ResponseEntity.ok().build();
     }
