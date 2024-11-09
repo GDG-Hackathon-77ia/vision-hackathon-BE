@@ -11,6 +11,7 @@ import com.gdg.kkia.chatbot.entity.ChatbotResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +42,30 @@ public class ChatbotResponseService {
             chatbotResponse.setMember(member);
 
             responses.add(chatbotResponse);
-
-
         }
 
         chatbotResponseRepository.saveAll(responses);
+    }
+
+    public List<ChatRequest> getChatbotResponses(Long memberId, GeminiRequestType type, LocalDateTime localDateTime) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException("memberId에 해당하는 멤버가 없습니다."));
+
+        LocalDateTime start = localDateTime.toLocalDate().atStartOfDay();
+        LocalDateTime end = localDateTime.toLocalDate().atTime(23, 59, 59, 999999999);;
+
+        List<ChatbotResponse> chatbotResponses = chatbotResponseRepository.findByMemberAndTypeAndResponseDateTimeBetween(member, type, start, end);
+        List<ChatRequest> conversations = new ArrayList<>();
+        for (ChatbotResponse chatbotResponse : chatbotResponses) {
+            ChatRequest chat = ChatRequest.builder()
+                    .question(chatbotResponse.getQuestion())
+                    .response(chatbotResponse.getResponse())
+                    .responseDateTime(chatbotResponse.getResponseDateTime())
+                    .type(chatbotResponse.getType())
+                    .build();
+            conversations.add(chat);
+        }
+        return conversations;
     }
 
 }
