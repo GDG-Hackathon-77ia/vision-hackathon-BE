@@ -1,12 +1,14 @@
 package com.gdg.kkia.gemini.controller;
 
+import com.gdg.kkia.gemini.GeminiRequestType;
+import com.gdg.kkia.gemini.dto.GeminiContent;
 import com.gdg.kkia.gemini.service.GeminiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,12 +17,16 @@ public class GeminiController {
 
     private final GeminiService geminiService;
 
-    @GetMapping("/gemini/chat")
-    public ResponseEntity<?> gemini() {
+    @GetMapping("/gemini/chat/{type}")
+    public ResponseEntity<GeminiContent> startChat(@PathVariable("type") GeminiRequestType type, @RequestBody List<GeminiContent> conversations) {
         try {
-            return ResponseEntity.ok().body(geminiService.getContents("안녕! 너는 누구야?"));
+            return ResponseEntity.ok().body(geminiService.startChat(type, conversations));
         } catch (HttpClientErrorException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            GeminiContent content = GeminiContent.builder()
+                    .role("model")
+                    .text(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(content);
         }
     }
 }

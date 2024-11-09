@@ -16,26 +16,10 @@ public class GeminiResponse {
     @Getter
     @Setter
     public static class Candidate {
-        private Content content;
+        private GeminiContent content;
         private String finishReason;
         private int index;
         private List<SafetyRating> safetyRatings;
-
-    }
-
-    @Getter @Setter
-    @ToString
-    public static class Content {
-        private List<Parts> parts;
-        private String role;
-
-    }
-
-    @Getter @Setter
-    @ToString
-    public static class Parts {
-        private String text;
-
     }
 
     @Getter @Setter
@@ -47,7 +31,6 @@ public class GeminiResponse {
     @Getter @Setter
     public static class PromptFeedback {
         private List<SafetyRating> safetyRatings;
-
     }
 
     public String getResponseText() {
