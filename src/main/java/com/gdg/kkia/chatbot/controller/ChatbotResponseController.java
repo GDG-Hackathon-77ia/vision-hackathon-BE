@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -35,11 +36,9 @@ public class ChatbotResponseController {
         return ResponseEntity.ok().build();
     }
 
-//    @Operation(summary = "채팅 불러오기", description = "채팅 기록을 불러옵니다.")
-//    @PostMapping("/chatbot/get")
-//    public ResponseEntity<Void> deleteMember(@RequestAttribute("memberId") Long memberId, @RequestAttribute("type")GeminiRequestType type, ) {
-//        chatbotResponseService.saveChatbotResponses(memberId, type, conversations);
-//        return ResponseEntity.ok().build();
-//    }
-
+    @Operation(summary = "채팅 불러오기", description = "특정 날짜의 채팅 기록을 불러옵니다.")
+    @GetMapping("/chatbot/get/{type}/{localDateTime}")
+    public ResponseEntity<List<ChatRequest>> getChatbotResponses(@RequestAttribute("memberId") Long memberId, @PathVariable("type") GeminiRequestType type, @PathVariable("localDateTime") LocalDateTime localDateTime) {
+        return ResponseEntity.ok().body(chatbotResponseService.getChatbotResponses(memberId, type, localDateTime));
+    }
 }
