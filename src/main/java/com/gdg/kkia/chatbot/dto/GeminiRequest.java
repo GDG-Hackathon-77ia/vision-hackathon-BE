@@ -1,5 +1,6 @@
-package com.gdg.kkia.gemini.dto;
+package com.gdg.kkia.chatbot.dto;
 
+import com.gdg.kkia.chatbot.entity.GeminiContent;
 import lombok.*;
 
 import java.util.ArrayList;

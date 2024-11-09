@@ -3,11 +3,11 @@ package com.gdg.kkia.chatbot.service;
 import com.gdg.kkia.chatbot.repository.ChatbotResponseRepository;
 import com.gdg.kkia.common.exception.BadRequestException;
 import com.gdg.kkia.common.exception.NotFoundException;
-import com.gdg.kkia.gemini.entity.GeminiRequestType;
-import com.gdg.kkia.gemini.dto.GeminiContent;
+import com.gdg.kkia.chatbot.entity.GeminiRequestType;
+import com.gdg.kkia.chatbot.entity.GeminiContent;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
-import com.gdg.kkia.chatbot.entity.ChatbotResponse;
+import com.gdg.kkia.chatbot.dto.ChatbotResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

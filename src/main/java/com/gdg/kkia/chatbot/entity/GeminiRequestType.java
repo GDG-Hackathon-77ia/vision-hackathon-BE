@@ -1,4 +1,4 @@
-package com.gdg.kkia.gemini.entity;
+package com.gdg.kkia.chatbot.entity;
 
 public enum GeminiRequestType {
     chat, diary

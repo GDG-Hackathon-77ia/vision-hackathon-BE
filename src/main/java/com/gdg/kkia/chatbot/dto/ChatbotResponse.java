@@ -1,6 +1,6 @@
-package com.gdg.kkia.chatbot.entity;
+package com.gdg.kkia.chatbot.dto;
 
-import com.gdg.kkia.gemini.entity.GeminiRequestType;
+import com.gdg.kkia.chatbot.entity.GeminiRequestType;
 import com.gdg.kkia.member.entity.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

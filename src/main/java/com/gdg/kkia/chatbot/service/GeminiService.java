@@ -1,9 +1,9 @@
-package com.gdg.kkia.gemini.service;
+package com.gdg.kkia.chatbot.service;
 
-import com.gdg.kkia.gemini.entity.GeminiRequestType;
-import com.gdg.kkia.gemini.dto.GeminiContent;
-import com.gdg.kkia.gemini.dto.GeminiRequest;
-import com.gdg.kkia.gemini.dto.GeminiResponse;
+import com.gdg.kkia.chatbot.entity.GeminiRequestType;
+import com.gdg.kkia.chatbot.entity.GeminiContent;
+import com.gdg.kkia.chatbot.dto.GeminiRequest;
+import com.gdg.kkia.chatbot.dto.GeminiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
