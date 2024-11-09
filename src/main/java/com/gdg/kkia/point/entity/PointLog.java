@@ -8,6 +8,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,7 +27,10 @@ public class PointLog {
     private PointLog.Type type;
     @CreatedDate
     @NotNull
-    private LocalDateTime recievedDatetime;
+    private LocalDateTime receivedDatetime;
+    @CreatedDate
+    @NotNull
+    private LocalDate receivedDate;
     @ManyToOne
     @JoinColumn(name = "member_id")
     @NotNull
