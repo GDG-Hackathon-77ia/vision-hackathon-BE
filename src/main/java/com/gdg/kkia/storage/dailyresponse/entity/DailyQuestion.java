@@ -20,4 +20,12 @@ public class DailyQuestion {
     private Long id;
     @NotNull
     private String question;
+
+    public DailyQuestion(String question) {
+        this.question = question;
+    }
+
+    public void updateQuestion(String question) {
+        this.question = question;
+    }
 }

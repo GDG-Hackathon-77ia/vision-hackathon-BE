@@ -108,7 +108,7 @@ public class PointLogService {
     }
 
     @Transactional
-    public void earnAnswerDailyQuestionPointPerDay(Member member) {
+    public void earnResponseDailyQuestionPointPerDay(Member member) {
         LocalDate today = LocalDate.now();
 
         if (!pointLogRepository.existsByReceivedDateAndMemberAndType(today, member, PointLog.Type.DAILYRESPONSE)) {

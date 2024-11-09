@@ -33,9 +33,19 @@ public class DailyResponse {
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
-    @OneToOne
+    @ManyToOne
     @NotNull
     @JoinColumn(name = "daily_question_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private DailyQuestion dailyQuestion;
+
+    public DailyResponse(String response, Member member, DailyQuestion dailyQuestion) {
+        this.response = response;
+        this.member = member;
+        this.dailyQuestion = dailyQuestion;
+    }
+
+    public boolean checkMember(Member member) {
+        return this.member.equals(member);
+    }
 }
