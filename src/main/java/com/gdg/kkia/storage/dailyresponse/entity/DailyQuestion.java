@@ -24,4 +24,8 @@ public class DailyQuestion {
     public DailyQuestion(String question) {
         this.question = question;
     }
+
+    public void updateQuestion(String question) {
+        this.question = question;
+    }
 }
