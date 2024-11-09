@@ -1,9 +1,6 @@
 package com.gdg.kkia.member.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -21,7 +18,11 @@ public class Member {
     @NotNull
     private String name;
     @NotNull
-    private String phoneNumber;
-    @NotNull
+    @Column(unique = true)
     private String email;
+
+    public Member(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
 }
