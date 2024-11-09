@@ -11,6 +11,7 @@ import com.gdg.kkia.common.exception.NotFoundException;
 import com.gdg.kkia.member.dto.LoginRequest;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
+import com.gdg.kkia.point.service.PointLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ public class MemberService {
     private final TokenService tokenService;
     private final KakaoApiService kakaoApiService;
     private final KakaoTokenService kakaoTokenService;
+    private final PointLogService pointLogService;
 
     @Transactional
     public TokenResponse kakaoLogin(String authorizationCode) {
@@ -43,6 +45,10 @@ public class MemberService {
 
         String accessToken = tokenService.generateAccessToken(email);
         String refreshToken = tokenService.generateRefreshToken(email);
+
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("멤버가 생성되지 않았습니다."));
+        pointLogService.earnAttendancePointPerDay(member);
 
         return new TokenResponse(accessToken, refreshToken);
     }
@@ -76,6 +82,10 @@ public class MemberService {
 
         String accessToken = tokenService.generateAccessToken(email);
         String refreshToken = tokenService.generateRefreshToken(email);
+
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("멤버가 생성되지 않았습니다."));
+        pointLogService.earnAttendancePointPerDay(member);
 
         return new TokenResponse(accessToken, refreshToken);
     }

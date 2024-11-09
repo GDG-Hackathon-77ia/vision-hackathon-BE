@@ -1,5 +1,6 @@
 package com.gdg.kkia.member.entity;
 
+import com.gdg.kkia.common.exception.BadRequestException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -29,5 +30,16 @@ public class Member {
         this.name = name;
         this.email = email;
         this.point = INITIAL_POINT;
+    }
+
+    public void earnPoint(int point) {
+        this.point += point;
+    }
+
+    public void consumePoint(int point) {
+        if (this.point - point < 0) {
+            throw new BadRequestException("보유 포인트보다 많은 포인트를 소비할 수 없습니다.");
+        }
+        this.point -= point;
     }
 }
