@@ -1,9 +1,10 @@
 package com.gdg.kkia.gemini.controller;
 
-import com.gdg.kkia.gemini.GeminiRequestType;
+import com.gdg.kkia.gemini.entity.GeminiRequestType;
 import com.gdg.kkia.gemini.dto.GeminiContent;
 import com.gdg.kkia.gemini.service.GeminiService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Tag(name = "챗봇 채팅", description = "챗봇 채팅 관련 API")
 public class GeminiController {
 
     private final GeminiService geminiService;
