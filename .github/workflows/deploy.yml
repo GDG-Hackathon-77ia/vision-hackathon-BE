@@ -20,4 +20,4 @@ jobs:
 
       - name: Run deployment script on server
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_IP }} bash /home/ubuntu/deploy.sh
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_IP }} bash /home/jiho99322/deploy.sh
