@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -28,10 +29,10 @@ public class DiaryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new StringTypeMessageResponse("일기가 작성되었습니다."));
     }
 
-    @Operation(summary = "작성한 모든 일기 조회", description = "사용자가 작성했던 모든 일기를 조회합니다.")
-    @GetMapping()
-    public ResponseEntity<List<DiaryReadResponse>> getAllDiary(@RequestAttribute("memberId") Long memberId) {
-        List<DiaryReadResponse> diaryReadResponses = diaryService.getAllDiaryWrittenByMember(memberId);
+    @Operation(summary = "유저의 날짜별 작성 일기 조회", description = "localDate에 해당하는 날짜에 사용자가 작성했던 모든 일기를 조회합니다.")
+    @GetMapping("/{localDate}")
+    public ResponseEntity<List<DiaryReadResponse>> getAllDiary(@RequestAttribute("memberId") Long memberId, @PathVariable("localDate") LocalDate localDate) {
+        List<DiaryReadResponse> diaryReadResponses = diaryService.getAllDiaryWrittenByMemberInLocalDate(memberId, localDate);
         return ResponseEntity.ok().body(diaryReadResponses);
     }
 

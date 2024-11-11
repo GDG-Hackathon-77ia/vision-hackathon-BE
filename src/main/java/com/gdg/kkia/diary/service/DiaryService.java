@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,17 +28,18 @@ public class DiaryService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버가 없습니다."));
 
-        Diary diary = new Diary(diaryWriteRequest.content(), member);
+        Diary diary = new Diary(diaryWriteRequest.type(), diaryWriteRequest.content(), member);
         diaryRepository.save(diary);
     }
 
     @Transactional(readOnly = true)
-    public List<DiaryReadResponse> getAllDiaryWrittenByMember(Long memberId) {
-        return diaryRepository.findAllByMemberId(memberId)
+    public List<DiaryReadResponse> getAllDiaryWrittenByMemberInLocalDate(Long memberId, LocalDate localDate) {
+        return diaryRepository.findAllByMemberIdAndWrittenDate(memberId, localDate)
                 .stream()
                 .map(Diary -> new DiaryReadResponse(
                         Diary.getId(),
                         Diary.getWrittenDatetime(),
+                        Diary.getType(),
                         Diary.getContent()))
                 .collect(Collectors.toList());
     }
@@ -54,7 +56,7 @@ public class DiaryService {
             throw new UnauthorizedException("로그인한 사용자가 작성한 일기가 아닙니다.");
         }
 
-        return new DiaryReadResponse(diary.getId(), diary.getWrittenDatetime(), diary.getContent());
+        return new DiaryReadResponse(diary.getId(), diary.getWrittenDatetime(), diary.getType(), diary.getContent());
     }
 
     @Transactional
