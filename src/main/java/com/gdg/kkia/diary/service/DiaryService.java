@@ -24,12 +24,14 @@ public class DiaryService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void writeDiary(Long memberId, DiaryWriteRequest diaryWriteRequest) {
+    public void writeDiary(Long memberId, List<DiaryWriteRequest> diaryWriteRequests) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버가 없습니다."));
 
-        Diary diary = new Diary(diaryWriteRequest.type(), diaryWriteRequest.content(), member);
-        diaryRepository.save(diary);
+        for (DiaryWriteRequest diaryWriteRequest : diaryWriteRequests) {
+            Diary diary = new Diary(diaryWriteRequest.type(), diaryWriteRequest.content(), member);
+            diaryRepository.save(diary);
+        }
     }
 
     @Transactional(readOnly = true)

@@ -75,8 +75,8 @@ public class DailyQuestionResponseController {
         return ResponseEntity.ok().body(dailyResponseResponse);
     }
 
-    @Operation(summary = "본인이 모든 답변 조회", description = "본인이 작성한 모든 답변을 조회합니다.")
-    @GetMapping("/response/{localDate}")
+    @Operation(summary = "날짜별 본인이 모든 답변 조회", description = "localDate에 본인이 작성한 모든 답변을 조회합니다.")
+    @GetMapping("/response/all/{localDate}")
     public ResponseEntity<List<DailyResponseResponse>> getAllResponseOfDailyQuestion(@RequestAttribute("memberId") Long memberId, @PathVariable("localDate") LocalDate localDate) {
         List<DailyResponseResponse> dailyResponseResponses = dailyResponseService.getAllResponseOfDailyQuestionInLocalDate(memberId, localDate);
         return ResponseEntity.ok().body(dailyResponseResponses);
