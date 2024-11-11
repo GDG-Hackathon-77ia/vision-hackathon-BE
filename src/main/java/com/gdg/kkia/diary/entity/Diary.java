@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,15 +30,26 @@ public class Diary {
     @NotNull
     @CreatedDate
     private LocalDateTime writtenDatetime;
+    @NotNull
+    private LocalDate writtenDate;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Diary.Type type;
     @ManyToOne
     @JoinColumn(name = "member_id")
     @NotNull
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
-    public Diary(String content, Member member) {
+    public Diary(Diary.Type type, String content, Member member) {
+        this.type = type;
         this.content = content;
         this.member = member;
+    }
+
+    @PrePersist
+    public void convertToReceivedDate() {
+        this.writtenDate = this.writtenDatetime.toLocalDate();
     }
 
     public boolean checkMemberIsNotCorrect(Member member) {
@@ -49,5 +61,11 @@ public class Diary {
             throw new BadRequestException("변경할 일기의 내용이 비어있을 수 없습니다.");
         }
         this.content = content;
+    }
+
+    public enum Type {
+        DAY,
+        EMOTION,
+        MEMO
     }
 }

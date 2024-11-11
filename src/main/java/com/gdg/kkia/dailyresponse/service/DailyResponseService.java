@@ -14,6 +14,7 @@ import com.gdg.kkia.point.service.PointLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,11 +54,11 @@ public class DailyResponseService {
         return new DailyResponseResponse(dailyResponse.getId(), dailyResponse.getDailyQuestion().getQuestion(), dailyResponse.getResponse());
     }
 
-    public List<DailyResponseResponse> getAllResponseOfDailyQuestion(Long memberId) {
+    public List<DailyResponseResponse> getAllResponseOfDailyQuestionInLocalDate(Long memberId, LocalDate localDate) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("memberId에 해당하는 멤버가 없습니다."));
 
-        return dailyResponseRepository.findAllByMember(member)
+        return dailyResponseRepository.findAllByMemberAndResponseDate(member, localDate)
                 .stream()
                 .map(DailyResponse -> new DailyResponseResponse(
                         DailyResponse.getId(),

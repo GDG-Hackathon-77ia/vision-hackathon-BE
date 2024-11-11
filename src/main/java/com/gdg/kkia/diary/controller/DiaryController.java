@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -21,17 +22,17 @@ public class DiaryController {
 
     private final DiaryService diaryService;
 
-    @Operation(summary = "일기 작성", description = "사용자가 일기를 작성합니다.")
+    @Operation(summary = "일기 작성", description = "사용자가 일기를 작성합니다. 리스트형태로 여러개를 넣을 수 있습니다.")
     @PostMapping
-    public ResponseEntity<StringTypeMessageResponse> writeDiary(@RequestAttribute("memberId") Long memberId, @RequestBody DiaryWriteRequest diaryWriteRequest) {
-        diaryService.writeDiary(memberId, diaryWriteRequest);
+    public ResponseEntity<StringTypeMessageResponse> writeDiary(@RequestAttribute("memberId") Long memberId, @RequestBody List<DiaryWriteRequest> diaryWriteRequests) {
+        diaryService.writeDiary(memberId, diaryWriteRequests);
         return ResponseEntity.status(HttpStatus.CREATED).body(new StringTypeMessageResponse("일기가 작성되었습니다."));
     }
 
-    @Operation(summary = "작성한 모든 일기 조회", description = "사용자가 작성했던 모든 일기를 조회합니다.")
-    @GetMapping()
-    public ResponseEntity<List<DiaryReadResponse>> getAllDiary(@RequestAttribute("memberId") Long memberId) {
-        List<DiaryReadResponse> diaryReadResponses = diaryService.getAllDiaryWrittenByMember(memberId);
+    @Operation(summary = "유저의 날짜별 작성 일기 조회", description = "localDate에 해당하는 날짜에 사용자가 작성했던 모든 일기를 조회합니다.")
+    @GetMapping("/all/{localDate}")
+    public ResponseEntity<List<DiaryReadResponse>> getAllDiary(@RequestAttribute("memberId") Long memberId, @PathVariable("localDate") LocalDate localDate) {
+        List<DiaryReadResponse> diaryReadResponses = diaryService.getAllDiaryWrittenByMemberInLocalDate(memberId, localDate);
         return ResponseEntity.ok().body(diaryReadResponses);
     }
 

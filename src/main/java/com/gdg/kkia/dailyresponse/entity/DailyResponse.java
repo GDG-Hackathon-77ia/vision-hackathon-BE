@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,6 +28,8 @@ public class DailyResponse {
     @CreatedDate
     private LocalDateTime responseDateTime;
     @NotNull
+    private LocalDate responseDate;
+    @NotNull
     private String response;
     @ManyToOne
     @JoinColumn(name = "member_id")
@@ -43,6 +46,11 @@ public class DailyResponse {
         this.response = response;
         this.member = member;
         this.dailyQuestion = dailyQuestion;
+    }
+
+    @PrePersist
+    public void convertToReceivedDate() {
+        this.responseDate = this.responseDateTime.toLocalDate();
     }
 
     public boolean checkMember(Member member) {
