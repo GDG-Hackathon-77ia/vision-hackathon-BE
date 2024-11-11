@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -75,9 +76,9 @@ public class DailyQuestionResponseController {
     }
 
     @Operation(summary = "본인이 모든 답변 조회", description = "본인이 작성한 모든 답변을 조회합니다.")
-    @GetMapping("/response/all")
-    public ResponseEntity<List<DailyResponseResponse>> getAllResponseOfDailyQuestion(@RequestAttribute("memberId") Long memberId) {
-        List<DailyResponseResponse> dailyResponseResponses = dailyResponseService.getAllResponseOfDailyQuestion(memberId);
+    @GetMapping("/response/{localDate}")
+    public ResponseEntity<List<DailyResponseResponse>> getAllResponseOfDailyQuestion(@RequestAttribute("memberId") Long memberId, @PathVariable("localDate") LocalDate localDate) {
+        List<DailyResponseResponse> dailyResponseResponses = dailyResponseService.getAllResponseOfDailyQuestionInLocalDate(memberId, localDate);
         return ResponseEntity.ok().body(dailyResponseResponses);
     }
 
