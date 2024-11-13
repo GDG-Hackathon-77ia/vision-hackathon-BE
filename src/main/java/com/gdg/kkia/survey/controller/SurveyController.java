@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/survey")
@@ -28,11 +26,11 @@ public class SurveyController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new StringTypeMessageResponse("저장되었습니다."));
     }
 
-    @Operation(summary = "사용자가 작성한 진단표 결과 모두 조회", description = "사용자가 작성했던 모든 진단표 결과를 조회합니다.")
-    @GetMapping
-    public ResponseEntity<List<SurveyResponse>> getAllAnswersWrittenByMember(@RequestAttribute("memberId") Long memberId) {
-        List<SurveyResponse> surveyResponses = surveyService.getAllSurveyAnswerWrittenByUser(memberId);
-        return ResponseEntity.ok().body(surveyResponses);
+    @Operation(summary = "사용자가 작성한 가장 최근의 진단표 결과 조회", description = "사용자가 작성한 가장 최근의 진단표 결과 조회를 조회합니다.")
+    @GetMapping("/user")
+    public ResponseEntity<SurveyResponse> getMostRecentlyWrittenSurveyWrittenByUser(@RequestAttribute("memberId") Long memberId) {
+        SurveyResponse surveyResponse = surveyService.getMostRecentlyWrittenSurveyWrittenByUser(memberId);
+        return ResponseEntity.ok().body(surveyResponse);
     }
 
     @Operation(summary = "인공지능이 작성한 가장 최근의 진단표 결과 조회", description = "인공지능이 작성한 가장 최근의 진단표 결과를 조회합니다.")
