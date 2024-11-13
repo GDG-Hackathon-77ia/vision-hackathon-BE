@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,15 @@ public class PointLogService {
     private final static int ATTENDANCE_BONUS_4_DAYS = 150;
     private final static int ATTENDANCE_BONUS_5_DAYS = 200;
     private final static int DIARY_WRITE_POINT = 300;
+    private final static int USING_CHAT_BOT_POINT = 200;
     private final static int DAILY_QUESTION_ANSWER_POINT = 200;
+    private final static List<PointLog.Type> ATTENDANCE_LISTS = Arrays.asList(
+            PointLog.Type.ATTENDANCE_DAY_1,
+            PointLog.Type.ATTENDANCE_DAY_2,
+            PointLog.Type.ATTENDANCE_DAY_3,
+            PointLog.Type.ATTENDANCE_DAY_4,
+            PointLog.Type.ATTENDANCE_DAY_5_OR_MORE
+    );
 
 
     private final PointLogRepository pointLogRepository;
@@ -60,12 +69,14 @@ public class PointLogService {
     public void earnAttendancePointPerDay(Member member) {
         LocalDate today = LocalDate.now();
 
-        if (!pointLogRepository.existsByReceivedDateAndMemberAndType(today, member, PointLog.Type.ATTENDANCE)) {
+        if (!pointLogRepository.existsByReceivedDateAndMemberAndTypeIn(today, member, ATTENDANCE_LISTS)) {
             int consecutiveDays = calculateConsecutiveAttendanceDays(member);
 
             int totalPoints = ATTENDANCE_BASE_POINT + calculateBonusPoints(consecutiveDays);
 
-            PointLog newPointLog = new PointLog(PointLog.Type.ATTENDANCE, PointLog.Status.EARNED, member, totalPoints);
+            PointLog.Type attendanceType = getAttendanceType(consecutiveDays);
+
+            PointLog newPointLog = new PointLog(attendanceType, PointLog.Status.EARNED, member, totalPoints);
             pointLogRepository.save(newPointLog);
 
             member.earnPoint(totalPoints);
@@ -78,7 +89,7 @@ public class PointLogService {
         int consecutiveDays = 0;
         for (int i = 1; i <= 5; i++) {
             LocalDate dateToCheck = today.minusDays(i);
-            if (pointLogRepository.existsByReceivedDateAndMemberAndType(today, member, PointLog.Type.ATTENDANCE)) {
+            if (pointLogRepository.existsByReceivedDateAndMemberAndTypeIn(dateToCheck, member, ATTENDANCE_LISTS)) {
                 consecutiveDays++;
             } else {
                 break;
@@ -97,11 +108,21 @@ public class PointLogService {
         };
     }
 
+    private PointLog.Type getAttendanceType(int consecutiveDays) {
+        return switch (consecutiveDays) {
+            case 2 -> PointLog.Type.ATTENDANCE_DAY_2;
+            case 3 -> PointLog.Type.ATTENDANCE_DAY_3;
+            case 4 -> PointLog.Type.ATTENDANCE_DAY_4;
+            case 5 -> PointLog.Type.ATTENDANCE_DAY_5_OR_MORE;
+            default -> PointLog.Type.ATTENDANCE_DAY_1;
+        };
+    }
+
     @Transactional
     public void earnDiaryWritePointPerDay(Member member) {
         LocalDate today = LocalDate.now();
 
-        if (!pointLogRepository.existsByReceivedDateAndMemberAndType(today, member, PointLog.Type.DIARY)) {
+        if (!pointLogRepository.existsByReceivedDateAndMemberAndTypeIn(today, member, List.of(PointLog.Type.DIARY))) {
             PointLog newPointLog = new PointLog(PointLog.Type.DIARY, PointLog.Status.EARNED, member, DIARY_WRITE_POINT);
             pointLogRepository.save(newPointLog);
 
@@ -110,11 +131,23 @@ public class PointLogService {
     }
 
     @Transactional
+    public void earnUsingChatBotPointPerDay(Member member) {
+        LocalDate today = LocalDate.now();
+
+        if (!pointLogRepository.existsByReceivedDateAndMemberAndTypeIn(today, member, List.of(PointLog.Type.CHAT_BOT))) {
+            PointLog newPointLog = new PointLog(PointLog.Type.CHAT_BOT, PointLog.Status.EARNED, member, USING_CHAT_BOT_POINT);
+            pointLogRepository.save(newPointLog);
+
+            member.earnPoint(USING_CHAT_BOT_POINT);
+        }
+    }
+
+    @Transactional
     public void earnResponseDailyQuestionPointPerDay(Member member) {
         LocalDate today = LocalDate.now();
 
-        if (!pointLogRepository.existsByReceivedDateAndMemberAndType(today, member, PointLog.Type.DAILYRESPONSE)) {
-            PointLog newPointLog = new PointLog(PointLog.Type.DAILYRESPONSE, PointLog.Status.EARNED, member, DAILY_QUESTION_ANSWER_POINT);
+        if (!pointLogRepository.existsByReceivedDateAndMemberAndTypeIn(today, member, List.of(PointLog.Type.DAILY_RESPONSE))) {
+            PointLog newPointLog = new PointLog(PointLog.Type.DAILY_RESPONSE, PointLog.Status.EARNED, member, DAILY_QUESTION_ANSWER_POINT);
             pointLogRepository.save(newPointLog);
 
             member.earnPoint(DAILY_QUESTION_ANSWER_POINT);

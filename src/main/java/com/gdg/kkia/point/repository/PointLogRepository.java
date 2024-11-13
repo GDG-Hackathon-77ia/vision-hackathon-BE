@@ -13,6 +13,6 @@ public interface PointLogRepository extends JpaRepository<PointLog, Long> {
 
     List<PointLog> findByMemberOrderByReceivedDateDesc(Member member);
 
-    boolean existsByReceivedDateAndMemberAndType(LocalDate receivedDate, Member member, PointLog.Type type);
+    boolean existsByReceivedDateAndMemberAndTypeIn(LocalDate receivedDate, Member member, List<PointLog.Type> type);
 
 }
