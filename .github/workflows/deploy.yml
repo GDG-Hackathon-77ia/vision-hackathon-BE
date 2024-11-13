@@ -13,11 +13,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Install sshpass
+        run: sudo apt-get install sshpass
 
       - name: Run deployment script on server
         run: |
-          ssh -o StrictHostKeyChecking=no jiho99322@${{ secrets.SERVER_IP }} bash /home/jiho99322/deploy.sh
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no -p 50 admin@${{ secrets.SERVER_IP }} bash /home/admin/deploy.sh
