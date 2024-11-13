@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,17 +31,14 @@ public class SurveyService {
     }
 
     @Transactional(readOnly = true)
-    public List<SurveyResponse> getAllSurveyAnswerWrittenByUser(Long memberId) {
+    public SurveyResponse getMostRecentlyWrittenSurveyWrittenByUser(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
-        return surveyRepository.findAllByMemberAndRole(member, Survey.Role.USER)
-                .stream()
-                .map(Survey -> new SurveyResponse(
-                        Survey.getId(),
-                        Survey.getSurveyedDatetime(),
-                        Survey.getAnswer()))
-                .collect(Collectors.toList());
+        Survey survey = surveyRepository.findTopByMemberAndRoleOrderBySurveyedDatetimeDesc(member, Survey.Role.USER)
+                .orElseThrow(() -> new NotFoundException("작성된 survey가 없습니다."));
+
+        return new SurveyResponse(survey.getId(), survey.getSurveyedDatetime(), survey.getAnswer());
     }
 
     @Transactional
