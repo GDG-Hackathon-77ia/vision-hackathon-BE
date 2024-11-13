@@ -8,6 +8,7 @@ import com.gdg.kkia.diary.entity.Diary;
 import com.gdg.kkia.diary.repository.DiaryRepository;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
+import com.gdg.kkia.point.service.PointLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
     private final MemberRepository memberRepository;
+    private final PointLogService pointLogService;
 
     @Transactional
     public void writeDiary(Long memberId, List<DiaryWriteRequest> diaryWriteRequests) {
@@ -32,6 +34,8 @@ public class DiaryService {
             Diary diary = new Diary(diaryWriteRequest.type(), diaryWriteRequest.content(), member);
             diaryRepository.save(diary);
         }
+
+        pointLogService.earnDiaryWritePointPerDay(member);
     }
 
     @Transactional(readOnly = true)

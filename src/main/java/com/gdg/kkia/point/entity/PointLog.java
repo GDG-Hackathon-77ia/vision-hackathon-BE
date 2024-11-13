@@ -56,11 +56,15 @@ public class PointLog {
     }
 
     public enum Type {
-        ATTENDANCE,
-        DAILYRESPONSE,
+        ATTENDANCE_DAY_1,
+        ATTENDANCE_DAY_2,
+        ATTENDANCE_DAY_3,
+        ATTENDANCE_DAY_4,
+        ATTENDANCE_DAY_5_OR_MORE,
+        DAILY_RESPONSE,
         DIARY,
-        PET_GROWTH
-
+        PET_GROWTH,
+        CHAT_BOT
     }
 
     public enum Status {
