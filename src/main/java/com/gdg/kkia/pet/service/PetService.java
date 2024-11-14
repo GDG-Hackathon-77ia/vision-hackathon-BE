@@ -1,6 +1,7 @@
 package com.gdg.kkia.pet.service;
 
 import com.gdg.kkia.common.exception.BadRequestException;
+import com.gdg.kkia.common.exception.NoPetException;
 import com.gdg.kkia.common.exception.NotFoundException;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
@@ -41,7 +42,7 @@ public class PetService {
                 .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
         Pet pet = petRepository.findByMember(member)
-                .orElseThrow(() -> new NotFoundException("해당 멤버가 소유한 팻이 없습니다."));
+                .orElseThrow(() -> new NoPetException("해당 멤버가 소유한 팻이 없습니다."));
 
         pet.changePetName(petNameRequest.name());
     }
@@ -52,7 +53,7 @@ public class PetService {
                 .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
         Pet pet = petRepository.findByMember(member)
-                .orElseThrow(() -> new NotFoundException("해당 멤버가 소유한 팻이 없습니다."));
+                .orElseThrow(() -> new NoPetException("해당 멤버가 소유한 팻이 없습니다."));
 
         pointLogService.consumePointAndWriteLog(member, growthButton, pet.isMaxGrowth());
         return pet.earnExperience(growthButton);
@@ -64,7 +65,7 @@ public class PetService {
                 .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
         Pet pet = petRepository.findByMember(member)
-                .orElseThrow(() -> new NotFoundException("해당 멤버가 소유한 팻이 없습니다."));
+                .orElseThrow(() -> new NoPetException("해당 멤버가 소유한 팻이 없습니다."));
 
         return new PetInfoResponse(pet.getName(), pet.getLevel(), pet.getExperience());
     }

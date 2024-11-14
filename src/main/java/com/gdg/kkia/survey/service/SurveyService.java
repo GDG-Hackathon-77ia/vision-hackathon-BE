@@ -1,5 +1,6 @@
 package com.gdg.kkia.survey.service;
 
+import com.gdg.kkia.common.exception.NoWrittenSurveyException;
 import com.gdg.kkia.common.exception.NotFoundException;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
@@ -36,7 +37,7 @@ public class SurveyService {
                 .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
         Survey survey = surveyRepository.findTopByMemberAndRoleOrderBySurveyedDatetimeDesc(member, Survey.Role.USER)
-                .orElseThrow(() -> new NotFoundException("작성된 survey가 없습니다."));
+                .orElseThrow(() -> new NoWrittenSurveyException("작성된 survey가 없습니다."));
 
         return new SurveyResponse(survey.getId(), survey.getSurveyedDatetime(), survey.getAnswer());
     }
@@ -53,7 +54,7 @@ public class SurveyService {
                 .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버를 찾을 수 없습니다."));
 
         Survey survey = surveyRepository.findTopByMemberAndRoleOrderBySurveyedDatetimeDesc(member, Survey.Role.MODEL)
-                .orElseThrow(() -> new NotFoundException("작성된 survey가 없습니다."));
+                .orElseThrow(() -> new NoWrittenSurveyException("작성된 survey가 없습니다."));
 
         return new SurveyResponse(survey.getId(), survey.getSurveyedDatetime(), survey.getAnswer());
     }
