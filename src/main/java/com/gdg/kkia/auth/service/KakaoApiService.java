@@ -80,6 +80,22 @@ public class KakaoApiService {
         return response.getBody();
     }
 
+    public KakaoTokenResponse refreshAccessToken(String refreshToken) {
+        String url = KAKAO_AUTH_BASE_URL + "/token";
+        String body = "grant_type=refresh_token&client_id=" + kakaoProperties.clientId()
+                + "&refresh_token=" + refreshToken;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<String> entity = new HttpEntity<>(body, headers);
+
+        ResponseEntity<KakaoTokenResponse> response = restTemplate.exchange(
+                url, HttpMethod.POST, entity, KakaoTokenResponse.class);
+
+        return response.getBody();
+    }
+
     public KakaoUserResponse getUserInfo(String accessToken) {
         String url = KAKAO_API_BASE_URL + "/me";
         HttpHeaders headers = new HttpHeaders();
