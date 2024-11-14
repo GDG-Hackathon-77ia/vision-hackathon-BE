@@ -9,7 +9,7 @@ import com.gdg.kkia.chatbot.entity.GeminiJsonResponse;
 import com.gdg.kkia.chatbot.entity.GeminiRequestType;
 import com.gdg.kkia.chatbot.entity.GeminiContent;
 import com.gdg.kkia.chatbot.dto.GeminiRequest;
-import com.gdg.kkia.chatbot.dto.GeminiResponse;
+import com.gdg.kkia.chatbot.entity.GeminiResponse;
 import com.gdg.kkia.chatbot.repository.ChatbotResponseRepository;
 import com.gdg.kkia.common.exception.NotFoundException;
 import com.gdg.kkia.member.entity.Member;
@@ -58,10 +58,12 @@ public class GeminiService {
             "Question: LLM이 보낸 질문, Responses: 사용자의 응답, ResponseTime: 응답한 시각, Type: chat(일반 채팅) 혹은 diary(일기 내용 기반 채팅)" +
             "모델 역할에서 사용자의 대화를 보고 그들의 감정을 파악해 주세요. 대화를 통해 사용자가 어떤 감정이나 느낌을 가졌을지 " +
             "분석해 주시고 분석한 내용을 바탕으로 각 질문에 대해 LLM이 사용자 역할에서 답변을 작성하고, 그에 따른 감정 상태와 점수를 " +
-            "평가해 주세요. 문진표 질문과 대화의 문맥을 통해 사용자가 느낄 수 있는 감정을 파악하고, " +
-            "우울감이 어느 정도인지 점수를 통해 제시해 주세요. 정리하자면 Json 형태로 다음과 형식에 맞춰 반환합니다. " +
-            "반환 형태 : { totalScore: 문진 자가 진단 결과 점수 합계, question: [ {num: 문항 번호, score: 문항에 대한 점수, " +
-            "reason: 문항에 대해 해당 점수를 매긴 이유} ], summary: 분석 요약 } 이 형태에 맞춰 추가적인 설명 없이 JSON으로만 반환합니다." +
+            "평가해 주세요. 문진표 질문과 대화의 문맥을 통해 사용자가 느낄 수 있는 감정을 파악하고, 우울감이 어느 정도인지 점수를 통해 계산합니다. " +
+            "반환되는 내용에는 질문과 점수를 표현하지 않고 해당 정보를 활용해서 사용자의 우울증 정도나 심리 상태를 분석하여 300자 이상 작성하여 주세요." +
+            "응답은 JSON 형식이 아닌, 순수 텍스트 형식의 간단한 요약문으로 작성해 주세요. 줄 바꿈이나 `**` 같은 마크다운 기호 없이 일반적인 텍스트로만 작성해 주세요." +
+//            "정리하자면 Json 형태로 다음과 형식에 맞춰 반환합니다. " +
+//            "반환 형태 : { totalScore: 문진 자가 진단 결과 점수 합계, question: [ {num: 문항 번호, score: 문항에 대한 점수, " +
+//            "reason: 문항에 대해 해당 점수를 매긴 이유} ], summary: 분석 요약 } 이 형태에 맞춰 추가적인 설명 없이 JSON으로만 반환합니다." +
             "다음은 문진표입니다:" +
             "지난 2주일 동안 당신은 다음의 문제들로 인해서 얼마나 자주 방해를 받았습니까?" +
             "1. 일 또는 여가 활동을 하는데 흥미나 즐거움을 느끼지 못함\n" +
@@ -207,7 +209,7 @@ public class GeminiService {
     }
 
     @Transactional
-    public GeminiJsonResponse selfTest(Long memberId) {
+    public ChatResponse selfTest(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("memberId에 해당하는 멤버가 없습니다."));
 
@@ -243,23 +245,29 @@ public class GeminiService {
         List<GeminiContent> prompt = new ArrayList<>();
         prompt.add(condition);
 
-        GeminiResponse geminiResponse = getContents(prompt, true);
-        // JSON 응답 처리
-        String jsonResponse = geminiResponse.getJsonResponse();
-        jsonResponse = jsonResponse.replaceAll("```json\n", "").replaceAll("\n```", "");
-        // JSON 문자열을 Java 객체로 변환
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            GeminiJsonResponse response = mapper.readValue(jsonResponse, GeminiJsonResponse.class);
-            // answer score 추출
-            List<Integer> answers = new ArrayList<>();
-            for (int i = 0; i < response.getQuestion().size(); i++) {
-                answers.add(response.getQuestion().get(i).getScore());
-            }
-            surveyService.saveSurveyAnswerWrittenByModel(answers, member);
-            return response;
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("JSON 파싱 오류", e);
-        }
+        GeminiResponse response = getContents(prompt, false);
+
+        return ChatResponse.builder()
+                .response(response.getResponseText())
+                .type(GeminiRequestType.test)
+                .build();
+
+//        // JSON 응답 처리
+//        String jsonResponse = geminiResponse.getJsonResponse();
+//        jsonResponse = jsonResponse.replaceAll("```json\n", "").replaceAll("\n```", "");
+//        // JSON 문자열을 Java 객체로 변환
+//        ObjectMapper mapper = new ObjectMapper();
+//        try {
+//            GeminiJsonResponse response = mapper.readValue(jsonResponse, GeminiJsonResponse.class);
+//            // answer score 추출
+//            List<Integer> answers = new ArrayList<>();
+//            for (int i = 0; i < response.getQuestion().size(); i++) {
+//                answers.add(response.getQuestion().get(i).getScore());
+//            }
+//            surveyService.saveSurveyAnswerWrittenByModel(answers, member);
+//            return response;
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException("JSON 파싱 오류", e);
+//        }
     }
 }

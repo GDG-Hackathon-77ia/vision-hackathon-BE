@@ -46,10 +46,8 @@ public class ChatbotResponseController {
 
     @Operation(summary = "Gemini 자가 진단", description = "Gemini가 스스로 문진 후 결과를 보여줍니다.")
     @GetMapping(value = "/chatbot/selftest", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GeminiJsonResponse> selfTest(@RequestAttribute("memberId") Long memberId) {
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(geminiService.selfTest(memberId));
+    public ResponseEntity<ChatResponse> selfTest(@RequestAttribute("memberId") Long memberId) {
+        return ResponseEntity.ok().body(geminiService.selfTest(memberId));
     }
 
 }

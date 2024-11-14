@@ -1,5 +1,5 @@
 package com.gdg.kkia.chatbot.entity;
 
 public enum GeminiRequestType {
-    chat, diary
+    chat, diary, test
 }
