@@ -33,10 +33,10 @@ public class DailyQuestionResponseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new StringTypeMessageResponse("질문이 추가되었습니다."));
     }
 
-    @Operation(summary = "랜덤한 하나의 질문 조회", description = "최근 조회된 질문 제외한 랜덤한 하나의 질문을 조회합니다.")
+    @Operation(summary = "랜덤한 하나의 질문 조회", description = "최근 조회된 질문 제외한 랜덤한 하나의 질문을 조회합니다. 사용자의 답변 여부도 함께 리턴되며, 만약 사용자의 답변이 있을 시 답변도 리턴됩니다.")
     @GetMapping("/question")
-    public ResponseEntity<DailyQuestionResponse> getRandomQuestionExcludingRecent() {
-        DailyQuestionResponse dailyQuestionResponse = dailyQuestionService.getRandomQuestionExcludingRecent();
+    public ResponseEntity<DailyQuestionResponse> getRandomQuestionExcludingRecent(@RequestAttribute("memberId") Long memberId) {
+        DailyQuestionResponse dailyQuestionResponse = dailyQuestionService.getRandomQuestionExcludingRecent(memberId);
         return ResponseEntity.ok().body(dailyQuestionResponse);
     }
 

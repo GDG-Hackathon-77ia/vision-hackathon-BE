@@ -1,5 +1,6 @@
 package com.gdg.kkia.dailyresponse.service;
 
+import com.gdg.kkia.common.exception.BadRequestException;
 import com.gdg.kkia.common.exception.NotFoundException;
 import com.gdg.kkia.common.exception.UnauthorizedException;
 import com.gdg.kkia.dailyresponse.dto.DailyResponseRequest;
@@ -28,12 +29,15 @@ public class DailyResponseService {
     private final PointLogService pointLogService;
 
     public void saveResponseOfDailyQuestion(Long memberId, DailyResponseRequest dailyResponseRequest) {
+        if (dailyResponseRepository.existsByMemberIdAndResponseDate(memberId, LocalDate.now())) {
+            throw new BadRequestException("이미 오늘 응답을 했습니다.");
+        }
+
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundException("memberId에 해당하는 멤버가 없습니다."));
 
         DailyQuestion dailyQuestion = dailyQuestionRepository.findById(dailyResponseRequest.questionId())
                 .orElseThrow(() -> new NotFoundException("questionId에 해당하는 질문이 없습니다."));
-
         DailyResponse dailyResponse = new DailyResponse(dailyResponseRequest.response(), member, dailyQuestion);
         dailyResponseRepository.save(dailyResponse);
 
