@@ -13,6 +13,7 @@ import com.gdg.kkia.member.dto.MemberInfoResponse;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
 import com.gdg.kkia.point.service.PointLogService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +31,8 @@ public class MemberService {
     private final PointLogService pointLogService;
 
     @Transactional
-    public TokenResponse kakaoLogin(String authorizationCode) {
-        KakaoTokenResponse kakaoTokenResponse = kakaoApiService.getAccessToken(authorizationCode);
+    public TokenResponse kakaoLogin(String authorizationCode, HttpServletRequest httpServletRequest) {
+        KakaoTokenResponse kakaoTokenResponse = kakaoApiService.getAccessToken(authorizationCode, httpServletRequest);
         KakaoUserResponse kakaoUserResponse = kakaoApiService.getUserInfo(kakaoTokenResponse.accessToken());
 
         String email = kakaoUserResponse.kakaoAccount().email();
