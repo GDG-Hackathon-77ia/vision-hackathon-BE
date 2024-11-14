@@ -9,6 +9,7 @@ import com.gdg.kkia.auth.service.TokenService;
 import com.gdg.kkia.common.exception.ConflictException;
 import com.gdg.kkia.common.exception.NotFoundException;
 import com.gdg.kkia.member.dto.LoginRequest;
+import com.gdg.kkia.member.dto.MemberInfoResponse;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
 import com.gdg.kkia.point.service.PointLogService;
@@ -53,6 +54,7 @@ public class MemberService {
         return new TokenResponse(accessToken, refreshToken);
     }
 
+    @Transactional
     public void registerNewMember(String name, String email) {
 
         if (memberRepository.existsByEmail(email)) {
@@ -63,6 +65,15 @@ public class MemberService {
         memberRepository.save(newMember);
     }
 
+    @Transactional(readOnly = true)
+    public MemberInfoResponse readMemberInfo(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException("id에 해당하는 멤버가 없습니다."));
+
+        return new MemberInfoResponse(member.getName(), member.getEmail());
+    }
+
+    @Transactional
     public void deleteMember(Long memberId) {
         if (!memberRepository.existsById(memberId)) {
             throw new NotFoundException("id에 해당하는 멤버가 없습니다.");
