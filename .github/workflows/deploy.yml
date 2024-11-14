@@ -18,4 +18,4 @@ jobs:
 
       - name: Run deployment script on server
         run: |
-          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no -p 50 admin@${{ secrets.SERVER_IP }} bash /home/admin/deploy.sh
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no -p 16122 rayoen@${{ secrets.SERVER_IP }} bash /home/rayoen/deploy.sh
