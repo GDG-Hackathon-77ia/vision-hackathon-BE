@@ -4,7 +4,9 @@ import com.gdg.kkia.common.exception.NotFoundException;
 import com.gdg.kkia.dailyresponse.dto.DailyQuestionRequest;
 import com.gdg.kkia.dailyresponse.dto.DailyQuestionResponse;
 import com.gdg.kkia.dailyresponse.entity.DailyQuestion;
+import com.gdg.kkia.dailyresponse.entity.DailyResponse;
 import com.gdg.kkia.dailyresponse.repository.DailyQuestionRepository;
+import com.gdg.kkia.dailyresponse.repository.DailyResponseRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +36,7 @@ public class DailyQuestionService {
     private final static int NUMBER_OF_RECENTLY_QUESTION_TO_EXCLUDE = 3;
 
     private final DailyQuestionRepository dailyQuestionRepository;
+    private final DailyResponseRepository dailyResponseRepository;
 
     @PostConstruct
     public void loadQuestionsFromFile() {
@@ -59,7 +63,14 @@ public class DailyQuestionService {
     }
 
     @Transactional
-    public DailyQuestionResponse getRandomQuestionExcludingRecent() {
+    public DailyQuestionResponse getRandomQuestionExcludingRecent(Long memberId) {
+        DailyResponse dailyResponse = dailyResponseRepository.findByMemberId(memberId)
+                .orElse(null);
+
+        if (dailyResponse != null && dailyResponse.getResponseDate().equals(LocalDate.now())) {
+            return new DailyQuestionResponse(dailyResponse.getDailyQuestion().getId(), dailyResponse.getDailyQuestion().getQuestion(), true, dailyResponse.getResponse());
+        }
+
         HttpSession session = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest().getSession();
 
         List<Long> recentlyFetchedQuestionIds = (List<Long>) session.getAttribute("recentlyQuestionIds");
@@ -83,10 +94,10 @@ public class DailyQuestionService {
             }
             session.setAttribute("recentlyQuestionIds", recentlyFetchedQuestionIds);
 
-            return new DailyQuestionResponse(randomQuestion.getId(), randomQuestion.getQuestion());
+            return new DailyQuestionResponse(randomQuestion.getId(), randomQuestion.getQuestion(), false, "아직 응답이 없습니다.");
         }
 
-        return new DailyQuestionResponse(null, "조회된 질문이 없습니다.");
+        return new DailyQuestionResponse(null, "조회된 질문이 없습니다.", false, null);
     }
 
     @Transactional(readOnly = true)
@@ -95,7 +106,9 @@ public class DailyQuestionService {
                 .stream()
                 .map(DailyQuestion -> new DailyQuestionResponse(
                         DailyQuestion.getId(),
-                        DailyQuestion.getQuestion()))
+                        DailyQuestion.getQuestion(),
+                        false,
+                        "아직 응답이 없습니다."))
                 .collect(Collectors.toList());
     }
 
