@@ -20,9 +20,9 @@ public class Pet {
     private final int INITIAL_EXPERIENCE = 0;
     private final int MAX_LEVEL = 3;
     private final int MAX_EXPERIENCE = 100;
-    private final int NORMAL_PLUS = 1;
-    private final int PREMIUM_PLUS = 12;
-    private final int SUPER_PLUS = 30;
+    private final int WATER_PLUS = 1;
+    private final int SUN_PLUS = 12;
+    private final int NUTRIENT_PLUS = 30;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,16 +49,16 @@ public class Pet {
         isMaxGrowth = false;
     }
 
-    public static int convertByGrowthButton(GrowthButton growthButton, int normalPlus, int premiumPlus, int superPlus) {
+    public static int convertByGrowthButton(GrowthButton growthButton, int waterPlus, int sunPlus, int nutrientPlus) {
         switch (growthButton) {
-            case NORMAL -> {
-                return normalPlus;
+            case WATER -> {
+                return waterPlus;
             }
-            case PREMIUM -> {
-                return premiumPlus;
+            case SUN -> {
+                return sunPlus;
             }
-            case SUPER -> {
-                return superPlus;
+            case NUTRIENT -> {
+                return nutrientPlus;
             }
             default -> {
                 throw new BadRequestException("성장버튼 타입이 올바르지 않습니다.");
@@ -97,13 +97,13 @@ public class Pet {
     }
 
     private int experienceToEarn(GrowthButton growthButton) {
-        return convertByGrowthButton(growthButton, NORMAL_PLUS, PREMIUM_PLUS, SUPER_PLUS);
+        return convertByGrowthButton(growthButton, WATER_PLUS, SUN_PLUS, NUTRIENT_PLUS);
     }
 
     public enum GrowthButton {
-        NORMAL,
-        PREMIUM,
-        SUPER
+        WATER,
+        SUN,
+        NUTRIENT
     }
 
 }
