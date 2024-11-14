@@ -4,6 +4,7 @@ import com.gdg.kkia.common.exception.BadRequestException;
 import com.gdg.kkia.common.exception.NotFoundException;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
+import com.gdg.kkia.pet.dto.PointAndPointLogType;
 import com.gdg.kkia.pet.entity.Pet;
 import com.gdg.kkia.point.dto.PointLogResponse;
 import com.gdg.kkia.point.dto.PointResponse;
@@ -159,8 +160,8 @@ public class PointLogService {
         if (isMaxGrowth) {
             throw new BadRequestException("최고레벨입니다.");
         }
-        int point = member.consumePoint(growthButton);
-        PointLog newPointLog = new PointLog(PointLog.Type.PET_GROWTH, PointLog.Status.CONSUMED, member, point);
+        PointAndPointLogType pointAndButtonType = member.consumePoint(growthButton);
+        PointLog newPointLog = new PointLog(pointAndButtonType.pointLogType(), PointLog.Status.CONSUMED, member, pointAndButtonType.point());
         pointLogRepository.save(newPointLog);
     }
 }

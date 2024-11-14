@@ -63,7 +63,9 @@ public class PointLog {
         ATTENDANCE_DAY_5_OR_MORE,
         DAILY_RESPONSE,
         DIARY,
-        PET_GROWTH,
+        GROWTH_WATER,
+        GROWTH_SUN,
+        GROWTH_NUTRIENT,
         CHAT_BOT
     }
 

@@ -1,7 +1,9 @@
 package com.gdg.kkia.member.entity;
 
 import com.gdg.kkia.common.exception.BadRequestException;
+import com.gdg.kkia.pet.dto.PointAndPointLogType;
 import com.gdg.kkia.pet.entity.Pet;
+import com.gdg.kkia.point.entity.PointLog;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -43,16 +45,32 @@ public class Member {
         this.point += point;
     }
 
-    public int consumePoint(Pet.GrowthButton growthButton) {
+    public PointAndPointLogType consumePoint(Pet.GrowthButton growthButton) {
         int pointToConsume = pointToConsume(growthButton);
         if (this.point - pointToConsume < 0) {
             throw new BadRequestException("보유 포인트보다 많은 포인트를 소비할 수 없습니다.");
         }
         this.point -= pointToConsume;
-        return pointToConsume;
+        PointLog.Type pointLogType = convertGrowthButtonToPointLogType(growthButton);
+        return new PointAndPointLogType(pointToConsume, pointLogType);
     }
 
     private int pointToConsume(Pet.GrowthButton growthButton) {
         return convertByGrowthButton(growthButton, NORMAL_BUTTON_PRICE, PREMIUM_BUTTON_PRICE, SUPER_BUTTON_PRICE);
+    }
+
+    private PointLog.Type convertGrowthButtonToPointLogType(Pet.GrowthButton growthButton) {
+        switch (growthButton) {
+            case WATER -> {
+                return PointLog.Type.GROWTH_WATER;
+            }
+            case SUN -> {
+                return PointLog.Type.GROWTH_SUN;
+            }
+            case NUTRIENT -> {
+                return PointLog.Type.GROWTH_NUTRIENT;
+            }
+            default -> throw new BadRequestException("팻 성장 버튼 이름이 올바르지 않습니다.");
+        }
     }
 }
