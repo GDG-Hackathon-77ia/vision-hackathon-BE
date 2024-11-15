@@ -21,10 +21,10 @@ public class Pet {
     private final int INITIAL_LEVEL = 1;
     private final int INITIAL_EXPERIENCE = 0;
     private final int MAX_LEVEL = 3;
-    private final int MAX_EXPERIENCE = 100;
-    private final int WATER_PLUS = 1;
-    private final int SUN_PLUS = 12;
-    private final int NUTRIENT_PLUS = 30;
+    private final int MAX_EXPERIENCE = 150;
+    private final int WATER_PLUS = 15;
+    private final int SUN_PLUS = 30;
+    private final int NUTRIENT_PLUS = 40;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -81,13 +81,14 @@ public class Pet {
 
     public int earnExperience(GrowthButton growthButton) {
         int plusExperience = experienceToEarn(growthButton);
+        int nextLevelExperience = MAX_EXPERIENCE * this.level;
 
-        if (this.experience + plusExperience >= MAX_EXPERIENCE) {
+        if (this.experience + plusExperience >= nextLevelExperience) {
             if (this.level < MAX_LEVEL) {
                 levelUP();
-                this.experience = (this.experience + plusExperience) - MAX_EXPERIENCE;
+                this.experience = (this.experience + plusExperience) - nextLevelExperience;
             } else {
-                this.experience = MAX_EXPERIENCE;
+                this.experience = nextLevelExperience;
                 this.level = MAX_LEVEL;
                 this.isMaxGrowth = true;
             }
