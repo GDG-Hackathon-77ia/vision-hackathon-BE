@@ -14,7 +14,7 @@ import org.springframework.core.env.Profiles;
 @Configuration
 public class SwaggerConfig {
     private static final String LOCAL_SERVER_URL = "http://localhost:8080";
-    private static final String PROD_SERVER_URL = "http://kkia.backapi.site:8100";
+    private static final String PROD_SERVER_URL = "https://kkia.backapi.site";
     private final Environment environment;
 
     public SwaggerConfig(Environment environment) {
