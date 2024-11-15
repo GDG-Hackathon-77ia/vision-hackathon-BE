@@ -1,7 +1,9 @@
 package com.gdg.kkia.dailyresponse.entity;
 
+import com.gdg.kkia.common.exception.EmptyFieldException;
 import com.gdg.kkia.member.entity.Member;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -30,6 +32,7 @@ public class DailyResponse {
     @NotNull
     private LocalDate responseDate;
     @NotNull
+    @NotEmpty
     private String response;
     @ManyToOne
     @JoinColumn(name = "member_id")
@@ -43,6 +46,9 @@ public class DailyResponse {
     private DailyQuestion dailyQuestion;
 
     public DailyResponse(String response, Member member, DailyQuestion dailyQuestion) {
+        if (response.isBlank() || response.isEmpty()) {
+            throw new EmptyFieldException("비어있을 수 없습니다.");
+        }
         this.response = response;
         this.member = member;
         this.dailyQuestion = dailyQuestion;

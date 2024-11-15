@@ -82,4 +82,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatusCode.valueOf(463)).body(problemDetail);
     }
 
+    @ExceptionHandler(EmptyFieldException.class)
+    public ResponseEntity<ProblemDetail> handleEmptyFieldException(EmptyFieldException e) {
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(463), e.getMessage());
+        problemDetail.setTitle("Empty Field Exception");
+        return ResponseEntity.status(HttpStatusCode.valueOf(464)).body(problemDetail);
+    }
+
 }

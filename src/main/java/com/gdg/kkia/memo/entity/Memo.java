@@ -1,8 +1,10 @@
 package com.gdg.kkia.memo.entity;
 
+import com.gdg.kkia.common.exception.EmptyFieldException;
 import com.gdg.kkia.diary.entity.Diary;
 import com.gdg.kkia.member.entity.Member;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -24,6 +26,7 @@ public class Memo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
+    @NotEmpty
     @Setter
     private String content;
     @NotNull
@@ -37,6 +40,9 @@ public class Memo {
     private Member member;
 
     public Memo(String content, Member member) {
+        if (content.isBlank() || content.isEmpty()) {
+            throw new EmptyFieldException("비어있을 수 없습니다.");
+        }
         this.content = content;
         this.member = member;
     }
