@@ -42,7 +42,7 @@ public class KakaoApiService {
 //            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다. requestUrl : " + requestUrl);
 //        }
 
-        String redirectUri = LOCALHOST_URL;
+        String redirectUri = "http://localhost:5173/redirection";
 
         return KAKAO_AUTH_BASE_URL + "/authorize?response_type=code&client_id="
                 + kakaoProperties.clientId() + "&redirect_uri=" + redirectUri;
@@ -67,7 +67,7 @@ public class KakaoApiService {
 //            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다. requestUrl : " + requestUrl);
 //        }
 
-        String redirectUri = LOCALHOST_URL;
+        String redirectUri = "http://localhost:5173/redirection";
 
         LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
