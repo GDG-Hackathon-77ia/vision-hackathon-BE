@@ -1,5 +1,6 @@
 package com.gdg.kkia.memo.entity;
 
+import com.gdg.kkia.common.exception.EmptyFieldException;
 import com.gdg.kkia.diary.entity.Diary;
 import com.gdg.kkia.member.entity.Member;
 import jakarta.persistence.*;
@@ -39,6 +40,9 @@ public class Memo {
     private Member member;
 
     public Memo(String content, Member member) {
+        if (content.isBlank() || content.isEmpty()) {
+            throw new EmptyFieldException("비어있을 수 없습니다.");
+        }
         this.content = content;
         this.member = member;
     }

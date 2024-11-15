@@ -1,6 +1,7 @@
 package com.gdg.kkia.pet.entity;
 
 import com.gdg.kkia.common.exception.BadRequestException;
+import com.gdg.kkia.common.exception.EmptyFieldException;
 import com.gdg.kkia.member.entity.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -44,6 +45,9 @@ public class Pet {
     private Member member;
 
     public Pet(String name, Member member) {
+        if (name.isBlank() || name.isEmpty()) {
+            throw new EmptyFieldException("비어있을 수 없습니다.");
+        }
         this.name = name;
         this.member = member;
         this.level = INITIAL_LEVEL;

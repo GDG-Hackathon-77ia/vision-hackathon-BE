@@ -1,6 +1,7 @@
 package com.gdg.kkia.diary.entity;
 
 import com.gdg.kkia.common.exception.BadRequestException;
+import com.gdg.kkia.common.exception.EmptyFieldException;
 import com.gdg.kkia.member.entity.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -44,6 +45,9 @@ public class Diary {
     private Member member;
 
     public Diary(Diary.Type type, String content, Member member) {
+        if (content.isBlank() || content.isEmpty()) {
+            throw new EmptyFieldException("비어있을 수 없습니다.");
+        }
         this.type = type;
         this.content = content;
         this.member = member;
