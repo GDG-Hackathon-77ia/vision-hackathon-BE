@@ -70,10 +70,10 @@ Youtube : [DanDan - 2024 VISION CHALLENGE THON]()</br>
 | :------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------: |
 | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Spring_Boot.svg/512px-Spring_Boot.svg.png" alt="Spring Boot Logo" width="200"> | <img src="https://upload.wikimedia.org/wikipedia/en/thumb/d/dd/MySQL_logo.svg/100px-MySQL_logo.svg.png" alt="My SQL Logo" width="200"> | <img src="https://miro.medium.com/v2/resize:fit:1200/1*gLJsygEtXnh9ROcbYi-34w.jpeg" alt="Gemini 1.5 Pro API" width="200"> |
 
-### Web Server Architecture
+## Web Server Architecture
 ![image](https://github.com/user-attachments/assets/ac491707-e8a7-45d1-9228-276991320b47)
 
-### ERD
+## ERD
 ![dandan](https://github.com/user-attachments/assets/643cb0cf-287c-449e-95e0-736b4d959689)
 
 ---
