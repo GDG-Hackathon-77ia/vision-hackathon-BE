@@ -22,6 +22,7 @@ public class KakaoApiService {
     private static final String KAKAO_AUTH_BASE_URL = "https://kauth.kakao.com/oauth";
     private static final String KAKAO_API_BASE_URL = "https://kapi.kakao.com/v2/user";
     private static final String LOCALHOST_URL = "localhost:5173";
+    private static final String LOCALHOST_URL_IP = "127.0.0.1:5173";
 
 
     private final RestTemplate restTemplate;
@@ -34,7 +35,7 @@ public class KakaoApiService {
         }
         String redirectUri;
 
-        if (requestUrl.contains(LOCALHOST_URL)|| requestUrl.contains("127.0.0.1:5173")) {
+        if (requestUrl.contains(LOCALHOST_URL) || requestUrl.contains(LOCALHOST_URL_IP)) {
             redirectUri = kakaoProperties.devRedirectUri();
         } else if (requestUrl.contains(kakaoProperties.frontUriWithoutHttp())) {
             redirectUri = kakaoProperties.redirectUri();
@@ -57,7 +58,7 @@ public class KakaoApiService {
         }
         String redirectUri;
 
-        if (requestUrl.contains(LOCALHOST_URL)|| requestUrl.contains("127.0.0.1:5173")) {
+        if (requestUrl.contains(LOCALHOST_URL) || requestUrl.contains(LOCALHOST_URL_IP)) {
             redirectUri = kakaoProperties.devRedirectUri();
         } else if (requestUrl.contains(kakaoProperties.frontUriWithoutHttp())) {
             redirectUri = kakaoProperties.redirectUri();
