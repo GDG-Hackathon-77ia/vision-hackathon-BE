@@ -3,6 +3,7 @@ package com.gdg.kkia.pet.entity;
 import com.gdg.kkia.common.exception.BadRequestException;
 import com.gdg.kkia.member.entity.Member;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -28,6 +29,7 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
+    @NotEmpty
     private String name;
     @NotNull
     private int level;

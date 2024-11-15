@@ -2,6 +2,7 @@ package com.gdg.kkia.dailyresponse.entity;
 
 import com.gdg.kkia.member.entity.Member;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -30,6 +31,7 @@ public class DailyResponse {
     @NotNull
     private LocalDate responseDate;
     @NotNull
+    @NotEmpty
     private String response;
     @ManyToOne
     @JoinColumn(name = "member_id")

@@ -3,6 +3,7 @@ package com.gdg.kkia.diary.entity;
 import com.gdg.kkia.common.exception.BadRequestException;
 import com.gdg.kkia.member.entity.Member;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -26,6 +27,7 @@ public class Diary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
+    @NotEmpty
     private String content;
     @NotNull
     @CreatedDate
