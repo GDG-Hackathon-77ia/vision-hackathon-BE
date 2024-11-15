@@ -29,23 +29,35 @@ public class KakaoApiService {
     private final KakaoProperties kakaoProperties;
 
     public String getAuthorizationUrl(HttpServletRequest httpServletRequest) {
-        String hostHeader = httpServletRequest.getHeader("Host");
+        // Origin과 Referer 헤더를 우선적으로 가져옵니다.
         String originHeader = httpServletRequest.getHeader("Origin");
         String refererHeader = httpServletRequest.getHeader("Referer");
 
-        String redirectUri = getRedirectUriBasedOnRequest(hostHeader, originHeader, refererHeader);
+        // Origin 또는 Referer가 유효한 경우 이를 기준으로 redirectUri를 설정합니다.
+        String redirectUri = getRedirectUriBasedOnRequest(originHeader, refererHeader);
+
+        // 만약 redirectUri가 설정되지 않았다면 Host 헤더를 검사합니다.
+        if (redirectUri == null) {
+            String hostHeader = httpServletRequest.getHeader("Host");
+            redirectUri = getRedirectUriBasedOnRequest(hostHeader, null);
+        }
+
+        if (redirectUri == null) {
+            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다.");
+        }
 
         return KAKAO_AUTH_BASE_URL + "/authorize?response_type=code&client_id="
                 + kakaoProperties.clientId() + "&redirect_uri=" + redirectUri;
     }
 
-    private String getRedirectUriBasedOnRequest(String host, String origin, String referer) {
-        if (isAllowedDomain(host) || isAllowedDomain(origin) || isAllowedDomain(referer)) {
+    private String getRedirectUriBasedOnRequest(String primaryUrl, String secondaryUrl) {
+        // primaryUrl 또는 secondaryUrl 중 하나라도 허용된 도메인인지 확인합니다.
+        if (isAllowedDomain(primaryUrl) || isAllowedDomain(secondaryUrl)) {
             return kakaoProperties.redirectUri();
-        } else if (isLocalDomain(host) || isLocalDomain(origin) || isLocalDomain(referer)) {
+        } else if (isLocalDomain(primaryUrl) || isLocalDomain(secondaryUrl)) {
             return kakaoProperties.devRedirectUri();
         }
-        throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다.");
+        return null; // 허용되지 않은 도메인일 경우 null 반환
     }
 
     private boolean isAllowedDomain(String url) {
@@ -57,11 +69,19 @@ public class KakaoApiService {
     }
 
     public KakaoTokenResponse getAccessToken(String authorizationCode, HttpServletRequest httpServletRequest) {
-        String hostHeader = httpServletRequest.getHeader("Host");
         String originHeader = httpServletRequest.getHeader("Origin");
         String refererHeader = httpServletRequest.getHeader("Referer");
 
-        String redirectUri = getRedirectUriBasedOnRequest(hostHeader, originHeader, refererHeader);
+        String redirectUri = getRedirectUriBasedOnRequest(originHeader, refererHeader);
+
+        if (redirectUri == null) {
+            String hostHeader = httpServletRequest.getHeader("Host");
+            redirectUri = getRedirectUriBasedOnRequest(hostHeader, null);
+        }
+
+        if (redirectUri == null) {
+            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다.");
+        }
 
         LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
