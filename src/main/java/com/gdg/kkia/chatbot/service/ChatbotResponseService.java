@@ -8,6 +8,7 @@ import com.gdg.kkia.chatbot.entity.GeminiRequestType;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
 import com.gdg.kkia.chatbot.entity.ChatbotResponse;
+import com.gdg.kkia.point.service.PointLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class ChatbotResponseService {
 
     private final ChatbotResponseRepository chatbotResponseRepository;
     private final MemberRepository memberRepository;
+    private final PointLogService pointLogService;
 
     @Transactional
     public void saveChatbotResponses(Long memberId, GeminiRequestType type, List<ChatRequest> conversations) {
@@ -47,6 +49,7 @@ public class ChatbotResponseService {
         }
 
         chatbotResponseRepository.saveAll(responses);
+        pointLogService.earnUsingChatBotPointPerDay(member);
     }
 
     @Transactional(readOnly = true)

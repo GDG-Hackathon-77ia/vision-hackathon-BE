@@ -29,7 +29,7 @@ public class PointLogService {
     private final static int ATTENDANCE_BONUS_4_DAYS = 25;
     private final static int ATTENDANCE_BONUS_5_DAYS = 30;
     private final static int DIARY_WRITE_POINT = 15;
-    private final static int USING_CHAT_BOT_POINT = 5;
+    private final static int USING_CHAT_BOT_POINT = 1;
     private final static int DAILY_QUESTION_ANSWER_POINT = 10;
     private final static List<PointLog.Type> ATTENDANCE_LISTS = Arrays.asList(
             PointLog.Type.ATTENDANCE_DAY_1,
