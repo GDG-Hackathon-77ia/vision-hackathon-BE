@@ -28,21 +28,19 @@ public class KakaoApiService {
     private final KakaoProperties kakaoProperties;
 
     public String getAuthorizationUrl(HttpServletRequest httpServletRequest) {
-//        String requestUrl = httpServletRequest.getHeader("Origin");
-//        if (requestUrl == null) {
-//            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다.");
-//        }
-//        String redirectUri;
-//
-//        if (requestUrl.contains(LOCALHOST_URL)) {
-//            redirectUri = kakaoProperties.devRedirectUri();
-//        } else if (requestUrl.contains(kakaoProperties.frontUriWithoutHttp())) {
-//            redirectUri = kakaoProperties.redirectUri();
-//        } else {
-//            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다. requestUrl : " + requestUrl);
-//        }
+        String requestUrl = httpServletRequest.getHeader("Host");
+        if (requestUrl == null) {
+            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다.");
+        }
+        String redirectUri;
 
-        String redirectUri = "http://localhost:5173/redirection";
+        if (requestUrl.contains(LOCALHOST_URL)) {
+            redirectUri = kakaoProperties.devRedirectUri();
+        } else if (requestUrl.contains(kakaoProperties.frontUriWithoutHttp())) {
+            redirectUri = kakaoProperties.redirectUri();
+        } else {
+            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다. requestUrl : " + requestUrl);
+        }
 
         return KAKAO_AUTH_BASE_URL + "/authorize?response_type=code&client_id="
                 + kakaoProperties.clientId() + "&redirect_uri=" + redirectUri;
@@ -53,21 +51,19 @@ public class KakaoApiService {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
 
-//        String requestUrl = httpServletRequest.getHeader("Origin");
-//        if (requestUrl == null) {
-//            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다.");
-//        }
-//        String redirectUri;
-//
-//        if (requestUrl.contains(LOCALHOST_URL)) {
-//            redirectUri = kakaoProperties.devRedirectUri();
-//        } else if (requestUrl.contains(kakaoProperties.frontUriWithoutHttp())) {
-//            redirectUri = kakaoProperties.redirectUri();
-//        } else {
-//            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다. requestUrl : " + requestUrl);
-//        }
+        String requestUrl = httpServletRequest.getHeader("Host");
+        if (requestUrl == null) {
+            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다.");
+        }
+        String redirectUri;
 
-        String redirectUri = "http://localhost:5173/redirection";
+        if (requestUrl.contains(LOCALHOST_URL)) {
+            redirectUri = kakaoProperties.devRedirectUri();
+        } else if (requestUrl.contains(kakaoProperties.frontUriWithoutHttp())) {
+            redirectUri = kakaoProperties.redirectUri();
+        } else {
+            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다. requestUrl : " + requestUrl);
+        }
 
         LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
