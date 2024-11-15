@@ -34,12 +34,10 @@ public class KakaoApiService {
         }
         String redirectUri;
 
-        if (requestUrl.contains(LOCALHOST_URL)) {
-            redirectUri = kakaoProperties.devRedirectUri();
-        } else if (requestUrl.contains(kakaoProperties.frontUriWithoutHttp())) {
+        if (requestUrl.contains(kakaoProperties.frontUriWithoutHttp())) {
             redirectUri = kakaoProperties.redirectUri();
         } else {
-            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다. requestUrl : " + requestUrl);
+            redirectUri = kakaoProperties.devRedirectUri();
         }
 
         return KAKAO_AUTH_BASE_URL + "/authorize?response_type=code&client_id="
@@ -57,12 +55,10 @@ public class KakaoApiService {
         }
         String redirectUri;
 
-        if (requestUrl.contains(LOCALHOST_URL)) {
-            redirectUri = kakaoProperties.devRedirectUri();
-        } else if (requestUrl.contains(kakaoProperties.frontUriWithoutHttp())) {
+        if (requestUrl.contains(kakaoProperties.frontUriWithoutHttp())) {
             redirectUri = kakaoProperties.redirectUri();
         } else {
-            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다. requestUrl : " + requestUrl);
+            redirectUri = kakaoProperties.devRedirectUri();
         }
 
         LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
