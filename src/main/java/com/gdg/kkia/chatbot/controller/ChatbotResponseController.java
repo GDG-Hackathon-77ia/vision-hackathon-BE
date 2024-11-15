@@ -27,8 +27,8 @@ public class ChatbotResponseController {
 
     @Operation(summary = "채팅 시작", description = "채팅을 시작 혹은 계속 진행합니다.")
     @PostMapping("/gemini/chat/{type}")
-    public ResponseEntity<ChatResponse> startChat(@PathVariable("type") GeminiRequestType type, @RequestBody List<ChatRequest> conversations) {
-        return ResponseEntity.ok().body(geminiService.startChat(type, conversations));
+    public ResponseEntity<ChatResponse> startChat(@RequestAttribute("memberId") Long memberId, @PathVariable("type") GeminiRequestType type, @RequestBody List<ChatRequest> conversations) {
+        return ResponseEntity.ok().body(geminiService.startChat(memberId, type, conversations));
     }
 
     @Operation(summary = "채팅 저장", description = "채팅 기록을 저장합니다.")

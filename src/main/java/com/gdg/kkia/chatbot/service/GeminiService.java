@@ -12,6 +12,9 @@ import com.gdg.kkia.chatbot.dto.GeminiRequest;
 import com.gdg.kkia.chatbot.entity.GeminiResponse;
 import com.gdg.kkia.chatbot.repository.ChatbotResponseRepository;
 import com.gdg.kkia.common.exception.NotFoundException;
+import com.gdg.kkia.diary.dto.DiaryReadResponse;
+import com.gdg.kkia.diary.entity.Diary;
+import com.gdg.kkia.diary.service.DiaryService;
 import com.gdg.kkia.member.entity.Member;
 import com.gdg.kkia.member.repository.MemberRepository;
 import com.gdg.kkia.survey.service.SurveyService;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -33,7 +37,7 @@ public class GeminiService {
 
     private final MemberRepository memberRepository;
     private final ChatbotResponseRepository chatbotResponseRepository;
-    private final SurveyService surveyService;
+    private final DiaryService diaryService;
 
     @Qualifier("geminiRestTemplate")
     @Autowired
@@ -139,11 +143,45 @@ public class GeminiService {
         return restTemplate.postForObject(requestUrl, request, GeminiResponse.class);
     }
 
-    public ChatResponse startChat(GeminiRequestType type, List<ChatRequest> conversations) {
+    public ChatResponse startChat(Long memberId, GeminiRequestType type, List<ChatRequest> conversations) {
         List<GeminiContent> prompt = new ArrayList<>();
 
-        GeminiContent condition = getPromptCondition(type);
-        prompt.add(condition);
+        GeminiContent condition;
+
+        // Check if there is written diary today
+        List<DiaryReadResponse> diaryList = diaryService.getAllDiaryWrittenByMemberInLocalDate(memberId, LocalDate.now());
+        diaryList.sort(Comparator.comparing(DiaryReadResponse::writtenDateTime).reversed());
+
+        System.out.println(diaryList);
+
+        if (diaryList.isEmpty()) {
+            condition = getPromptCondition(GeminiRequestType.chat);
+            prompt.add(condition);
+        }
+        else {
+            condition = getPromptCondition(GeminiRequestType.diary);
+            prompt.add(condition);
+
+            for (DiaryReadResponse diaryReadResponse : diaryList) {
+                String question = "";
+                if (diaryReadResponse.type() == Diary.Type.DAY) {
+                    question = "오늘은 어떤 일이 있었나요?";
+                }
+                else if (diaryReadResponse.type() == Diary.Type.EMOTION) {
+                    question = "당신의 감정을 솔직하게 적어주세요.";
+                }
+                else if (diaryReadResponse.type() == Diary.Type.MEMO) {
+                    question = "추가적으로 남기고 싶은 말이 있나요?";
+                }
+                ChatRequest chat = ChatRequest.builder()
+                        .question(question)
+                        .response(diaryReadResponse.content())
+                        .responseDateTime(diaryReadResponse.writtenDateTime())
+                        .type(GeminiRequestType.diary)
+                        .build();
+                conversations.addFirst(chat);
+            }
+        }
 
         for (ChatRequest chat : conversations) {
             GeminiContent question = new GeminiContent("model", chat.getQuestion());
