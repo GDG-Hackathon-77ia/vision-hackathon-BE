@@ -45,25 +45,28 @@ public class GeminiService {
     @Value("${gemini.api.key}")
     private String geminiApiKey;
 
-    private static final String CHATPROMPT = "사용자가 일상이나 감정을 표현할 때, 대화에 따뜻함과 배려를 담아 응답해 주세요. " +
-            "사용자의 감정 표현을 이해하고 공감하는 태도를 유지하며, 특히 우울감이 느껴질 경우 긍정적이고 위로가 되는 말로 응답해 주세요. " +
-            "모든 답변은 한국어로 제공해주세요.";
+    private static final String CHATPROMPT =
+            "심리학자로서 당신은 Charles R. Snyder의 희망 이론에 기반한 방법을 적용하고 있습니다. 당신은 현재 나와 함께 상담을 진행하며, " +
+            "나의 심리적 및 정서적 상태에 대해 질문을 던져 Charles R. Snyder의 방식으로 심리적 지원을 제공하려고 합니다. " +
+            "나는 설명을 요청할 때만 제공해야 합니다. 대화를 한 번에 전부 작성하지 마십시오. 이 상담은 오직 당신과 나 사이에서만 이루어집니다. " +
+            "Charles R. Snyder가 질문을 제시했을 법한 방식으로 한 번에 하나의 질문을 하고, 내 대답을 기다리십시오. 세 번의 대답 후, " +
+            "내가 당신에게 공유한 내용을 바탕으로 직면한 장애물, 추구해야 할 목표, 이를 달성하기 위해 나아가야 할 경로, " +
+            "그리고 동기 부여적 지원에 대한 조언을 제공하십시오. 이 과정에서 그의 이론의 이름은 언급하지 않고, 직접적으로 나에게 이야기하십시오. " +
+            "형식적인 언어를 사용하고 중복 없이 표현하십시오.";
 
-    private static final String DIARYPROMPT = "사용자가 일기 내용을 제공하면, 그 일기에서 추상적인 부분을 식별하고, " +
+    private static final String DIARYPROMPT =
+            "사용자가 일기 내용을 제공하면, 그 일기에서 추상적인 부분을 식별하고, " +
             "그에 대해 사용자가 더 구체적으로 답할 수 있도록 질문을 던져주세요. 만약 추상적인 부분이 없다면, " +
             " 그 일기 내용을 바탕으로 공감을 표현하며 긍정적인 반응을 보여주세요. 모든 답변은 한국어로 제공해주세요.";
 
-    private static final String CEHCKSTATUS = "다음은 우울증 상태를 체크하기 위한 문진표 항목과 사용자와의 대화 기록입니다. " +
-            "대화는 다음과 같은 형태로 전달됩니다. 대화 형태: " +
-            "Question: LLM이 보낸 질문, Responses: 사용자의 응답, ResponseTime: 응답한 시각, Type: chat(일반 채팅) 혹은 diary(일기 내용 기반 채팅)" +
+    private static final String CEHCKSTATUS =
+            "다음은 우울증 상태를 체크하기 위한 문진표 항목과 사용자와의 대화 기록입니다. 대화는 다음과 같은 형태로 전달됩니다. 대화 형태: " +
+            "Question: 당신이 보낸 질문, Responses: 사용자의 응답, ResponseTime: 응답한 시각, Type: chat(일반 채팅) 혹은 diary(일기 내용 기반 채팅)" +
             "모델 역할에서 사용자의 대화를 보고 그들의 감정을 파악해 주세요. 대화를 통해 사용자가 어떤 감정이나 느낌을 가졌을지 " +
-            "분석해 주시고 분석한 내용을 바탕으로 각 질문에 대해 LLM이 사용자 역할에서 답변을 작성하고, 그에 따른 감정 상태와 점수를 " +
-            "평가해 주세요. 문진표 질문과 대화의 문맥을 통해 사용자가 느낄 수 있는 감정을 파악하고, 우울감이 어느 정도인지 점수를 통해 계산합니다. " +
+            "분석해 주시고 분석한 내용을 바탕으로 각 질문에 대해 당신이 사용자 역할에서 답변을 작성하고, 그에 따른 감정 상태와 점수를 " +
+            "평가해 주세요. 문진표 질문과 대화의 문맥을 통해 사용자가 느낄 수 있는 감정을 파악하고, 우울감이 어느 정도인지 점수를 계산해 분석해주세요. " +
             "반환되는 내용에는 질문과 점수를 표현하지 않고 해당 정보를 활용해서 사용자의 우울증 정도나 심리 상태를 분석하여 300자 이상 작성하여 주세요." +
-            "응답은 JSON 형식이 아닌, 순수 텍스트 형식의 간단한 요약문으로 작성해 주세요. 줄 바꿈이나 `**` 같은 마크다운 기호 없이 일반적인 텍스트로만 작성해 주세요." +
-//            "정리하자면 Json 형태로 다음과 형식에 맞춰 반환합니다. " +
-//            "반환 형태 : { totalScore: 문진 자가 진단 결과 점수 합계, question: [ {num: 문항 번호, score: 문항에 대한 점수, " +
-//            "reason: 문항에 대해 해당 점수를 매긴 이유} ], summary: 분석 요약 } 이 형태에 맞춰 추가적인 설명 없이 JSON으로만 반환합니다." +
+            "응답은 JSON 형식이 아닌, 순수 텍스트 형식의 간단한 요약문으로 작성해 주세요. 특수한 기호 없이 일반적인 텍스트로만 작성해 주세요." +
             "다음은 문진표입니다:" +
             "지난 2주일 동안 당신은 다음의 문제들로 인해서 얼마나 자주 방해를 받았습니까?" +
             "1. 일 또는 여가 활동을 하는데 흥미나 즐거움을 느끼지 못함\n" +
@@ -122,7 +125,7 @@ public class GeminiService {
             "거의 매일 방해받았다 (3점)" +
             "다음은 대화 기록입니다: ";
 
-    private GeminiResponse getContents(List<GeminiContent> prompt, boolean isJsonResponse) {
+    private GeminiResponse getContents(List<GeminiContent> prompt) {
         String requestUrl = apiUrl + "?key=" + geminiApiKey;
 
         GeminiRequest request = new GeminiRequest();
@@ -131,47 +134,7 @@ public class GeminiService {
         }
 
         GeminiRequest.GenerationConfig config = new GeminiRequest.GenerationConfig();
-        if (isJsonResponse) {
-            config.setResponse_mime_type("application/json");
-            // JSON 스키마 설정 (필요한 경우)
-            Map<String, Object> schema = new HashMap<>();
-            schema.put("type", "object");
-            schema.put("properties", new HashMap<String, Object>() {{
-                put("totalScore", new HashMap<String, Object>() {{
-                    put("type", "number");
-                    put("description", "문진 자가 진단 결과 점수 합계");
-                }});
-                put("question", new HashMap<String, Object>() {{
-                    put("type", "array");
-                    put("items", new HashMap<String, Object>() {{
-                        put("type", "object");
-                        put("properties", new HashMap<String, Object>() {{
-                            put("num", new HashMap<String, Object>() {{
-                                put("type", "number");
-                                put("description", "문항 번호");
-                            }});
-                            put("score", new HashMap<String, Object>() {{
-                                put("type", "number");
-                                put("description", "문항에 대한 점수");
-                            }});
-                            put("reason", new HashMap<String, Object>() {{
-                                put("type", "string");
-                                put("description", "문항에 대해 해당 점수를 매긴 이유");
-                            }});
-                        }});
-                        put("required", Arrays.asList("num", "score", "reason"));
-                    }});
-                }});
-                put("summary", new HashMap<String, Object>() {{
-                    put("type", "string");
-                    put("description", "분석 요약");
-                }});
-            }});
-            schema.put("required", Arrays.asList("totalScore", "question", "summary"));
-            config.setResponse_schema(schema);
-        } else {
-            config.setResponse_mime_type("text/plain");
-        }
+        config.setResponse_mime_type("text/plain");
 
         return restTemplate.postForObject(requestUrl, request, GeminiResponse.class);
     }
@@ -189,7 +152,7 @@ public class GeminiService {
             prompt.add(response);
         }
 
-        GeminiResponse response = getContents(prompt, false);
+        GeminiResponse response = getContents(prompt);
 
         return ChatResponse.builder()
                 .response(response.getResponseText())
@@ -245,29 +208,11 @@ public class GeminiService {
         List<GeminiContent> prompt = new ArrayList<>();
         prompt.add(condition);
 
-        GeminiResponse response = getContents(prompt, false);
+        GeminiResponse response = getContents(prompt);
 
         return ChatResponse.builder()
                 .response(response.getResponseText())
                 .type(GeminiRequestType.test)
                 .build();
-
-//        // JSON 응답 처리
-//        String jsonResponse = geminiResponse.getJsonResponse();
-//        jsonResponse = jsonResponse.replaceAll("```json\n", "").replaceAll("\n```", "");
-//        // JSON 문자열을 Java 객체로 변환
-//        ObjectMapper mapper = new ObjectMapper();
-//        try {
-//            GeminiJsonResponse response = mapper.readValue(jsonResponse, GeminiJsonResponse.class);
-//            // answer score 추출
-//            List<Integer> answers = new ArrayList<>();
-//            for (int i = 0; i < response.getQuestion().size(); i++) {
-//                answers.add(response.getQuestion().get(i).getScore());
-//            }
-//            surveyService.saveSurveyAnswerWrittenByModel(answers, member);
-//            return response;
-//        } catch (JsonProcessingException e) {
-//            throw new RuntimeException("JSON 파싱 오류", e);
-//        }
     }
 }
