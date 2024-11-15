@@ -152,36 +152,37 @@ public class GeminiService {
         List<DiaryReadResponse> diaryList = diaryService.getAllDiaryWrittenByMemberInLocalDate(memberId, LocalDate.now());
         diaryList.sort(Comparator.comparing(DiaryReadResponse::writtenDateTime).reversed());
 
-        System.out.println(diaryList);
-
-        if (diaryList.isEmpty()) {
-            condition = getPromptCondition(GeminiRequestType.chat);
-            prompt.add(condition);
-        }
-        else {
-            condition = getPromptCondition(GeminiRequestType.diary);
-            prompt.add(condition);
-
-            for (DiaryReadResponse diaryReadResponse : diaryList) {
-                String question = "";
-                if (diaryReadResponse.type() == Diary.Type.DAY) {
-                    question = "오늘은 어떤 일이 있었나요?";
-                }
-                else if (diaryReadResponse.type() == Diary.Type.EMOTION) {
-                    question = "당신의 감정을 솔직하게 적어주세요.";
-                }
-                else if (diaryReadResponse.type() == Diary.Type.MEMO) {
-                    question = "추가적으로 남기고 싶은 말이 있나요?";
-                }
-                ChatRequest chat = ChatRequest.builder()
-                        .question(question)
-                        .response(diaryReadResponse.content())
-                        .responseDateTime(diaryReadResponse.writtenDateTime())
-                        .type(GeminiRequestType.diary)
-                        .build();
-                conversations.addFirst(chat);
-            }
-        }
+        condition = getPromptCondition(GeminiRequestType.chat);
+        prompt.add(condition);
+//
+//        if (diaryList.isEmpty()) {
+//            condition = getPromptCondition(GeminiRequestType.chat);
+//            prompt.add(condition);
+//        }
+//        else {
+//            condition = getPromptCondition(GeminiRequestType.diary);
+//            prompt.add(condition);
+//
+//            for (DiaryReadResponse diaryReadResponse : diaryList) {
+//                String question = "";
+//                if (diaryReadResponse.type() == Diary.Type.DAY) {
+//                    question = "오늘은 어떤 일이 있었나요?";
+//                }
+//                else if (diaryReadResponse.type() == Diary.Type.EMOTION) {
+//                    question = "당신의 감정을 솔직하게 적어주세요.";
+//                }
+//                else if (diaryReadResponse.type() == Diary.Type.MEMO) {
+//                    question = "추가적으로 남기고 싶은 말이 있나요?";
+//                }
+//                ChatRequest chat = ChatRequest.builder()
+//                        .question(question)
+//                        .response(diaryReadResponse.content())
+//                        .responseDateTime(diaryReadResponse.writtenDateTime())
+//                        .type(GeminiRequestType.diary)
+//                        .build();
+//                conversations.addFirst(chat);
+//            }
+//        }
 
         for (ChatRequest chat : conversations) {
             GeminiContent question = new GeminiContent("model", chat.getQuestion());
