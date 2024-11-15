@@ -19,9 +19,9 @@ import static com.gdg.kkia.pet.entity.Pet.convertByGrowthButton;
 public class Member {
 
     public static final int INITIAL_POINT = 100;
-    public static final int NORMAL_BUTTON_PRICE = 15;
-    public static final int PREMIUM_BUTTON_PRICE = 30;
-    public static final int SUPER_BUTTON_PRICE = 40;
+    public static final int NORMAL_BUTTON_PRICE = 10;
+    public static final int PREMIUM_BUTTON_PRICE = 15;
+    public static final int SUPER_BUTTON_PRICE = 20;
 
 
     @Id

@@ -22,9 +22,9 @@ public class Pet {
     private final int INITIAL_EXPERIENCE = 0;
     private final int MAX_LEVEL = 3;
     private final int MAX_EXPERIENCE = 150;
-    private final int WATER_PLUS = 15;
-    private final int SUN_PLUS = 30;
-    private final int NUTRIENT_PLUS = 40;
+    private final int WATER_PLUS = 10;
+    private final int SUN_PLUS = 20;
+    private final int NUTRIENT_PLUS = 30;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
