@@ -1,6 +1,5 @@
-// TODO 메인 이미지 수정하기
 
-![Frame 8](https://github.com/H0ngJu/atti/assets/106425326/574cbb35-5e7f-4e26-b7d0-ef19bc3cdd39)
+![초록색-가로-로고](https://github.com/user-attachments/assets/8c47e610-808c-4132-a65b-a4190ba56daf)
 
 # DanDan
 
@@ -71,7 +70,11 @@ Youtube : [DanDan - 2024 VISION CHALLENGE THON]()</br>
 | :------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------: |
 | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Spring_Boot.svg/512px-Spring_Boot.svg.png" alt="Spring Boot Logo" width="200"> | <img src="https://upload.wikimedia.org/wikipedia/en/thumb/d/dd/MySQL_logo.svg/100px-MySQL_logo.svg.png" alt="My SQL Logo" width="200"> | <img src="https://miro.medium.com/v2/resize:fit:1200/1*gLJsygEtXnh9ROcbYi-34w.jpeg" alt="Gemini 1.5 Pro API" width="200"> |
 
-// TODO 시스템 설계도 추가하기
+### Web Server Architecture
+![image](https://github.com/user-attachments/assets/ac491707-e8a7-45d1-9228-276991320b47)
+
+### ERD
+![dandan](https://github.com/user-attachments/assets/643cb0cf-287c-449e-95e0-736b4d959689)
 
 ---
 
