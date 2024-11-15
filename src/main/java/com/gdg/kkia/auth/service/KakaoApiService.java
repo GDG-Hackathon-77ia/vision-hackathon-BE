@@ -29,42 +29,39 @@ public class KakaoApiService {
     private final KakaoProperties kakaoProperties;
 
     public String getAuthorizationUrl(HttpServletRequest httpServletRequest) {
-        String requestUrl = httpServletRequest.getHeader("Host");
-        if (requestUrl == null) {
-            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다.");
-        }
-        String redirectUri;
+        String hostHeader = httpServletRequest.getHeader("Host");
+        String originHeader = httpServletRequest.getHeader("Origin");
+        String refererHeader = httpServletRequest.getHeader("Referer");
 
-        if (requestUrl.contains(LOCALHOST_URL) || requestUrl.contains(LOCALHOST_URL_IP)) {
-            redirectUri = kakaoProperties.devRedirectUri();
-        } else if (requestUrl.contains(kakaoProperties.frontUriWithoutHttp())) {
-            redirectUri = kakaoProperties.redirectUri();
-        } else {
-            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다. requestUrl : " + requestUrl);
-        }
+        String redirectUri = getRedirectUriBasedOnRequest(hostHeader, originHeader, refererHeader);
 
         return KAKAO_AUTH_BASE_URL + "/authorize?response_type=code&client_id="
                 + kakaoProperties.clientId() + "&redirect_uri=" + redirectUri;
     }
 
+    private String getRedirectUriBasedOnRequest(String host, String origin, String referer) {
+        if (isAllowedDomain(host) || isAllowedDomain(origin) || isAllowedDomain(referer)) {
+            return kakaoProperties.redirectUri();
+        } else if (isLocalDomain(host) || isLocalDomain(origin) || isLocalDomain(referer)) {
+            return kakaoProperties.devRedirectUri();
+        }
+        throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다.");
+    }
+
+    private boolean isAllowedDomain(String url) {
+        return url != null && url.contains(kakaoProperties.frontUriWithoutHttp());
+    }
+
+    private boolean isLocalDomain(String url) {
+        return url != null && (url.contains(LOCALHOST_URL) || url.contains(LOCALHOST_URL_IP));
+    }
+
     public KakaoTokenResponse getAccessToken(String authorizationCode, HttpServletRequest httpServletRequest) {
-        String url = KAKAO_AUTH_BASE_URL + "/token";
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
+        String hostHeader = httpServletRequest.getHeader("Host");
+        String originHeader = httpServletRequest.getHeader("Origin");
+        String refererHeader = httpServletRequest.getHeader("Referer");
 
-        String requestUrl = httpServletRequest.getHeader("Host");
-        if (requestUrl == null) {
-            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다.");
-        }
-        String redirectUri;
-
-        if (requestUrl.contains(LOCALHOST_URL) || requestUrl.contains(LOCALHOST_URL_IP)) {
-            redirectUri = kakaoProperties.devRedirectUri();
-        } else if (requestUrl.contains(kakaoProperties.frontUriWithoutHttp())) {
-            redirectUri = kakaoProperties.redirectUri();
-        } else {
-            throw new BadRequestException("해당 도메인에서는 카카오 로그인이 불가합니다. requestUrl : " + requestUrl);
-        }
+        String redirectUri = getRedirectUriBasedOnRequest(hostHeader, originHeader, refererHeader);
 
         LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
@@ -72,11 +69,12 @@ public class KakaoApiService {
         body.add("redirect_uri", redirectUri);
         body.add("code", authorizationCode);
 
-        RequestEntity<LinkedMultiValueMap<String, String>> request = new RequestEntity<>(body,
-                headers, HttpMethod.POST, URI.create(url));
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
 
-        ResponseEntity<KakaoTokenResponse> response = restTemplate.exchange(request,
-                KakaoTokenResponse.class);
+        RequestEntity<LinkedMultiValueMap<String, String>> request = new RequestEntity<>(body, headers, HttpMethod.POST, URI.create(KAKAO_AUTH_BASE_URL + "/token"));
+
+        ResponseEntity<KakaoTokenResponse> response = restTemplate.exchange(request, KakaoTokenResponse.class);
 
         return response.getBody();
     }
