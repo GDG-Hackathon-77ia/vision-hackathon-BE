@@ -38,23 +38,23 @@ public class DailyQuestionService {
     private final DailyQuestionRepository dailyQuestionRepository;
     private final DailyResponseRepository dailyResponseRepository;
 
-    @PostConstruct
-    public void loadQuestionsFromFile() {
-        try (InputStream inputStream = getClass().getResourceAsStream("/dailyQuestions.txt");
-             BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(inputStream)))) {
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String finalLine = line;
-                if (dailyQuestionRepository.findAll().stream().noneMatch(q -> q.getQuestion().equals(finalLine.trim()))) {
-                    DailyQuestion question = new DailyQuestion(line.trim());
-                    dailyQuestionRepository.save(question);
-                }
-            }
-        } catch (IOException e) {
-            logger.error("Failed to load questions from file", e);
-        }
-    }
+//    @PostConstruct
+//    public void loadQuestionsFromFile() {
+//        try (InputStream inputStream = getClass().getResourceAsStream("/dailyQuestions.txt");
+//             BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(inputStream)))) {
+//
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                String finalLine = line;
+//                if (dailyQuestionRepository.findAll().stream().noneMatch(q -> q.getQuestion().equals(finalLine.trim()))) {
+//                    DailyQuestion question = new DailyQuestion(line.trim());
+//                    dailyQuestionRepository.save(question);
+//                }
+//            }
+//        } catch (IOException e) {
+//            logger.error("Failed to load questions from file", e);
+//        }
+//    }
 
     @Transactional
     public void addDailyQuestion(DailyQuestionRequest dailyQuestionRequest) {
