@@ -84,7 +84,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
-                .excludePathPatterns("/redirection")
+                .excludePathPatterns("/redirection/**")
                 .excludePathPatterns("/api/auth/**")
                 .excludePathPatterns("/api/temp/**")
                 .excludePathPatterns("/swagger-ui/**")
