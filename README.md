@@ -8,6 +8,7 @@
 사용자는 반려 친구인 '단이'와 함께 대화하며 현재 심리 상태를 확인할 수 있습니다.
 
 # [www.dandani.site](http://www.dandani.site)
+⚠️ **Google Gemini api 호출 증가로 인한 일시적 장애로 챗봇 및 진단결과 출력에 오류가 있을 수 있습니다**
 <img src="https://github.com/user-attachments/assets/387e5f9b-2c04-4661-a66b-5b435ab460a2" width="400"/>
 
 ---
