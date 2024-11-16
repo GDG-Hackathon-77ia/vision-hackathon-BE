@@ -23,7 +23,7 @@ public class KakaoApiService {
     private static final String KAKAO_API_BASE_URL = "https://kapi.kakao.com/v2/user";
     private static final String LOCALHOST_URL = "localhost:5173";
     private static final String LOCALHOST_URL_IP = "127.0.0.1:5173";
-    private static final String SUB_SERVER_URL = "http://dandani.site";
+    private static final String SUB_SERVER_URL = "http://dandani.site/redirection";
     private static final String SUB_SERVER_URL_WITHOUT_HTTP = "dandani.site";
 
 
