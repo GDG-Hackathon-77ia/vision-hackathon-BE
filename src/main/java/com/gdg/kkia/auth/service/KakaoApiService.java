@@ -23,6 +23,8 @@ public class KakaoApiService {
     private static final String KAKAO_API_BASE_URL = "https://kapi.kakao.com/v2/user";
     private static final String LOCALHOST_URL = "localhost:5173";
     private static final String LOCALHOST_URL_IP = "127.0.0.1:5173";
+    private static final String SUB_SERVER_URL = "http://dandani.site";
+    private static final String SUB_SERVER_URL_WITHOUT_HTTP = "dandani.site";
 
 
     private final RestTemplate restTemplate;
@@ -56,6 +58,8 @@ public class KakaoApiService {
             return kakaoProperties.redirectUri();
         } else if (isLocalDomain(primaryUrl) || isLocalDomain(secondaryUrl)) {
             return kakaoProperties.devRedirectUri();
+        } else if (isSubAllowedDomain(primaryUrl) || isSubAllowedDomain(secondaryUrl)) {
+            return SUB_SERVER_URL;
         }
         return null; // 허용되지 않은 도메인일 경우 null 반환
     }
@@ -66,6 +70,10 @@ public class KakaoApiService {
 
     private boolean isLocalDomain(String url) {
         return url != null && (url.contains(LOCALHOST_URL) || url.contains(LOCALHOST_URL_IP));
+    }
+
+    private boolean isSubAllowedDomain(String url) {
+        return url != null && url.contains(SUB_SERVER_URL_WITHOUT_HTTP);
     }
 
     public KakaoTokenResponse getAccessToken(String authorizationCode, HttpServletRequest httpServletRequest) {
