@@ -102,6 +102,15 @@
 | [@HappyNunna](https://github.com/HappyNunna) |
 
 
+## 기능소개
+![image](https://github.com/user-attachments/assets/aa9031e4-b0d1-49d6-af2c-8f7128e70342)
+![image](https://github.com/user-attachments/assets/f05d72db-00c4-4749-ad91-0d8bd2fa7b28)
+![image](https://github.com/user-attachments/assets/15ab739d-4b52-4acd-830a-ed82514e7e3b)
+![image](https://github.com/user-attachments/assets/b54b780c-9cae-47fa-a69d-57ad50dec96b)
+![image](https://github.com/user-attachments/assets/2c335c26-b1cc-46c6-8264-5965b609acb0)
+![image](https://github.com/user-attachments/assets/4733f401-738a-4f82-9c17-a3e0bbba164d)
+![image](https://github.com/user-attachments/assets/fd908b43-ee96-40f8-827c-05b2062c472b)
+
 
 # Closing
 
