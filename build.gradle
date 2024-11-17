@@ -38,7 +38,7 @@ dependencies {
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.6.0'
 	implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
 	runtimeOnly 'com.mysql:mysql-connector-j'
-	testImplementation 'mysql:mysql-connector-java:8.0.33'
+	implementation 'com.h2database:h2'
 }
 
 tasks.named('test') {
