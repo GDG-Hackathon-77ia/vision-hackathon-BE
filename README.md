@@ -19,6 +19,7 @@
 2. [UN SDGs](#UN-SDGs)
 3. [Skill](#Skill)
 4. [Team Info](#Team-Info)
+5. [기능 소개](#기능-소개)
 6. [Closing](#Closing)
 
 
