@@ -7,7 +7,9 @@
 바쁜 일상 속에서도 사용자가 스스로의 마음 건강을 체계적으로 관리할 수 있도록 설계된 혁신적인 도구입니다.
 사용자는 반려 친구인 '단이'와 함께 대화하며 현재 심리 상태를 확인할 수 있습니다.
 
-Youtube : [DanDan - 2024 VISION CHALLENGE THON]()</br>
+# [www.dandani.site](http://www.dandani.site)
+⚠️ **Google Gemini api 호출 증가로 인한 일시적 장애로 챗봇 및 진단결과 출력에 오류가 있을 수 있습니다**
+<img src="https://github.com/user-attachments/assets/387e5f9b-2c04-4661-a66b-5b435ab460a2" width="400"/>
 
 ---
 
@@ -19,7 +21,6 @@ Youtube : [DanDan - 2024 VISION CHALLENGE THON]()</br>
 4. [Team Info](#Team-Info)
 6. [Closing](#Closing)
 
----
 
 # Features
 
@@ -101,6 +102,15 @@ Youtube : [DanDan - 2024 VISION CHALLENGE THON]()</br>
 | <img src="https://avatars.githubusercontent.com/u/130140862?v=4" width="128"> |
 | [@HappyNunna](https://github.com/HappyNunna) |
 
+
+## 기능소개
+![image](https://github.com/user-attachments/assets/aa9031e4-b0d1-49d6-af2c-8f7128e70342)
+![image](https://github.com/user-attachments/assets/f05d72db-00c4-4749-ad91-0d8bd2fa7b28)
+![image](https://github.com/user-attachments/assets/15ab739d-4b52-4acd-830a-ed82514e7e3b)
+![image](https://github.com/user-attachments/assets/b54b780c-9cae-47fa-a69d-57ad50dec96b)
+![image](https://github.com/user-attachments/assets/2c335c26-b1cc-46c6-8264-5965b609acb0)
+![image](https://github.com/user-attachments/assets/4733f401-738a-4f82-9c17-a3e0bbba164d)
+![image](https://github.com/user-attachments/assets/fd908b43-ee96-40f8-827c-05b2062c472b)
 
 
 # Closing
