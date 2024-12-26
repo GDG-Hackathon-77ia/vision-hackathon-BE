@@ -7,7 +7,7 @@
 바쁜 일상 속에서도 사용자가 스스로의 마음 건강을 체계적으로 관리할 수 있도록 설계된 혁신적인 도구입니다.
 사용자는 반려 친구인 '단이'와 함께 대화하며 현재 심리 상태를 확인할 수 있습니다.
 
-# [www.dandani.site](http://www.dandani.site)
+# [www.dandani.site](http://dandani.site)
 ⚠️ **Google Gemini api 호출 증가로 인한 일시적 장애로 챗봇 및 진단결과 출력에 오류가 있을 수 있습니다**
 <img src="https://github.com/user-attachments/assets/387e5f9b-2c04-4661-a66b-5b435ab460a2" width="400"/>
 
